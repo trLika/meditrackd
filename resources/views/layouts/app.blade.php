@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm">
+     <nav class="navbar navbar-expand-md navbar-light custom-nav shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     MediTrackD
@@ -16,10 +16,10 @@
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('dashboard') }}">Tableau de Bord</a>
+                            <a class="nav-link text-danger fw-bold" href="{{ route('dashboard') }}">Tableau de Bord</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Patients</a>
+                            <a class="nav-link text-danger fw-bold" href="#">Patients</a>
                         </li>
                     </ul>
                 </div>
