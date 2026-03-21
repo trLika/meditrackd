@@ -19,7 +19,7 @@
                             <a class="nav-link text-danger fw-bold" href="{{ route('dashboard') }}">Tableau de Bord</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-danger fw-bold" href="#">Patients</a>
+                            <a class="nav-link text-danger fw-bold" href="{{ route('patients.index') }}">Patients</a>
                         </li>
                     </ul>
                 </div>

@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="col-md-6 text-center">
-            <i class="bi bi-heart-pulse medical-icon heartBeat-active"></i>
+            <i class="bi bi-heart-pulse medical-icon .heartBeat-active"></i>
         </div>
     </div>
 </div>
