@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,43 +13,82 @@
 <body class="bg-light">
 
 
-        
+
 
 
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold text-secondary">Liste des Patients</h2>
-            <button class="btn btn-danger shadow-sm">
-                <i class="bi bi-person-plus-fill"></i> Nouveau Patient
-            </button>
+            <h2 class="fw-bold text-success">Liste des Patients</h2>
+
+               <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill px-4 shadow-sm border-0">
+    <i class="bi bi-person-plus-fill me-2"></i> Ajouter un Patient
+
+              </a>
+
         </div>
 
-        <div class="card shadow-sm border-0">
+        <div class="card shadow-sm ">
             <div class="card-body p-0">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
+
+             @if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+            <div>
+                {{ session('success') }}
+            </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
+        <ul class="mb-0">
+            @foreach($errors->all() as $error)
+                <li><i class="bi bi-exclamation-triangle-fill me-2"></i>{{ $error }}</li>
+            @endforeach
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@endif
+                <table class="table table-striped table-hover mb-0">
+                    <thead class="table-ligh text-secondary">
                         <tr>
                             <th>ID</th>
                             <th>Nom & Prénom</th>
+                            <th>Sexe</th>
                             <th>Téléphone</th>
+                            <th>Adresse</th>
                             <th>Groupe Sanguin</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($patients as $patient)
-    <tr>
-        <td>{{ $patient->id }}</td>
-        <td><strong>{{ $patient->nom }}</strong> {{ $patient->prenom }}</td>
-        <td>{{ $patient->telephone }}</td>
-        <td><span class="badge bg-info">{{ $patient->groupe_sanguin }}</span></td>
-        <td>
-            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></button>
-            <button class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></button>
-            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-        </td>
-    </tr>
-    @endforeach
+                @foreach($patients as $patient)
+<tr>
+    <td>{{ $patient->id }}</td>
+    <td><strong>{{ $patient->nom }}</strong> {{ $patient->prenom }}</td>
+    <td>{{ $patient->sexe ?? '-' }}</td>
+    <td>{{ $patient->telephone }}</td>
+    <td>{{ $patient->adresse ?? '-' }}</td>
+    <td>
+        <span class="badge bg-info text-dark">{{ $patient->groupe_sanguin }}</span>
+    </td>
+    <td class="text-center">
+        <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
+        <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
+
+        <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" class="d-inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer ?')">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
+    </td>
+</tr>
+@endforeach
                     </tbody>
                 </table>
             </div>

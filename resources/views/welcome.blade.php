@@ -10,7 +10,7 @@
                 Gerez vos dossier medicaux de maniere efficace et sécurisée avec MediTrackD, votre système de gestion intégré de dossiers médicaux.
             </p>
             <div class="mt-4">
-                <a href="{{ ('dashboard') }}" class="btn btn-primary btn-lg px-4 text-dark">
+                <a href="{{ ('dashboard') }}" class="btn btn-success btn-lg px-4 text-dark">
                     Accéder à MediTrackD
                 </a>
             </div>
