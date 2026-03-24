@@ -16,18 +16,34 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('dashboard') }}">Tableau de Bord</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('patients.index') }}">Patients</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Consultations</a>
-                </li>
-            </ul>
+       <div class="collapse navbar-collapse" id="mainNavbar">
+    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('/') }}">Accueil</a>
+        </li>
+
+        @auth
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('dashboard') }}">Tableau de Bord</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('patients.index') }}">Patients</a>
+            </li>
+            <li class="nav-item">
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-link nav-link text-danger" style="text-decoration: none;">
+                        Déconnexion
+                    </button>
+                </form>
+            </li>
+        @else
+            <li class="nav-item">
+                <a class="nav-link btn btn-success text-white px-3" href="{{ route('login') }}">Connexion</a>
+            </li>
+        @endauth
+    </ul>
+</div>
         </div>
     </div>
 </nav>

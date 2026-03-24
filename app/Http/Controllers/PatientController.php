@@ -6,6 +6,12 @@ use App\Models\Patient;
 use App\Http\Controllers\Controller;
 class PatientController extends Controller
 {
+    public function __construct()
+    {
+
+        $this->middleware('auth');// On s'assure que toutes les méthodes de ce contrôleur nécessitent une authentification
+    }
+
     public function index()
 {
     $patients = Patient::all();
@@ -28,7 +34,7 @@ public function store(Request $request)
     $request->validate([
         'nom' => 'required|string|max:255',
         'prenom' => 'required|string|max:255',
-        // Ajout de l'unicité sur le téléphone ici :
+
         'telephone' => 'required|unique:patients,telephone',
         'groupe_sanguin' => 'required',
         'sexe' => 'required',
@@ -46,21 +52,20 @@ public function store(Request $request)
 
     return redirect()->route('patients.index')->with('success', 'Patient enregistré !');
 }
-// Pour le bouton "Modifier" (le crayon)
+
 public function edit($id)
 {
     $patient = Patient::findOrFail($id);
     return view('patients.edit', compact('patient'));
 }
 
-// Pour le bouton "Voir" (l'œil)
+
 public function show($id)
 {
     $patient = Patient::findOrFail($id);
     return view('patients.show', compact('patient'));
 }
 
-// Pour le bouton "Supprimer" (la poubelle)
 public function destroy($id)
 {
     $patient = Patient::findOrFail($id);
@@ -72,21 +77,21 @@ public function destroy($id)
 public function update(Request $request, $id)
 
 {
-    // 1. On cherche le patient dans la base
+
     $patient = Patient::findOrFail($id);
 
-    // 2. On valide les nouvelles données
+
     $request->validate([
         'nom' => 'required|string|max:255',
         'prenom' => 'required|string|max:255',
-        // On permet au patient de garder son numéro, mais on vérifie s'il ne prend pas celui d'un autre
+
         'telephone' => 'required|unique:patients,telephone,' . $id,
     ]);
 
-    // 3. On met à jour les données
+
     $patient->update($request->all());
 
-    // 4. On redirige vers la liste avec un message de succès
+
     return redirect()->route('patients.index')->with('success', 'Le patient a été mis à jour avec succès !');
 }
 
