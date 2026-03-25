@@ -41,7 +41,7 @@
 <a href="{{ route('consultations.create', $patient->id) }}" class="btn btn-sm btn-info text-white float-end">
     <i class="bi bi-plus-circle"></i> Nouvelle Consultation
 </a>
-        </div>
+  </div>
         <div class="card-body">
             @if($consultations->isEmpty())
                 <p class="text-muted text-center my-3">Aucune consultation enregistrée pour ce patient.</p>
@@ -63,12 +63,18 @@
                                 <td>{{ $consultation->diagnostic }}</td>
                                 <td>{{ $consultation->traitement }}</td>
                                 <td>
+<a href="{{ route('consultations.pdf', $consultation->id) }}" class="btn btn-sm btn-danger">
+    <i class="bi bi-file-earmark-pdf"></i> PDF
+</a>
+      
                                     <small>
                                         Tension : {{ $consultation->tension ?? '-' }}<br>
                                         Poids : {{ $consultation->poids ? $consultation->poids.'kg' : '-' }}
                                     </small>
                                 </td>
+
                             </tr>
+
                             @endforeach
                         </tbody>
                     </table>

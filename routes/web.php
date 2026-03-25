@@ -31,3 +31,5 @@ Route::get('patients/{patient}/consultations/create', [ConsultationController::c
 ->name('consultations.create');
 Route::post('patients/{patient}/consultations', [ConsultationController::class, 'store'])
 ->name('consultations.store');
+Route::get('/consultations/{id}/pdf', [ConsultationController::class, 'generatePDF'])
+->name('consultations.pdf');

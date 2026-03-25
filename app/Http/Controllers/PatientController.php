@@ -12,12 +12,25 @@ class PatientController extends Controller
         $this->middleware('auth');// On s'assure que toutes les méthodes de ce contrôleur nécessitent une authentification
     }
 
-    public function index()
+    public function index(Request $request)
 {
-    $patients = Patient::all();
-   return view('patients.index', compact('patients'));
+
+    $query = Patient::query();
 
 
+    if ($request->filled('search')) {
+        $search = $request->search;
+        $query->where(function($q) use ($search) {
+            $q->where('nom', 'like', '%' . $search . '%')
+              ->orWhere('prenom', 'like', '%' . $search . '%')
+              ->orWhere('telephone', 'like', '%' . $search . '%');
+        });
+    }
+
+
+    $patients = $query->orderBy('nom', 'asc')->paginate(10);
+
+    return view('patients.index', compact('patients'));
 }
 
 public function create()

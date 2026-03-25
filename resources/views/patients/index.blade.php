@@ -9,6 +9,7 @@
     <title>MediTrackD - Gestion des Patients</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
 </head>
 <body class="bg-light">
 
@@ -26,6 +27,35 @@
               </a>
 
         </div>
+
+            @if(request('search'))
+                <a href="{{ route('patients.index') }}" class="btn btn-outline-secondary ms-2">
+                    Réinitialiser
+                </a>
+            @endif
+        </form>
+    </div>
+   <div class="row mb-3 d-flex justify-content-center">
+    <div class="col-md-3">
+        <form action="{{ route('patients.index') }}" method="GET" class="d-flex shadow-sm p-1 bg-white rounded">
+            <input type="text"
+                   name="search"
+                   class="form-control border-0"
+                   placeholder="saisissez  nom, prénom ou téléphone..."
+                   value="{{ request('search') }}">
+
+            <button type="submit" class="btn btn-info ms-2 px-4">
+                <i class="bi bi-search"></i> Rechercher
+            </button>
+
+            @if(request('search'))
+                <a href="{{ route('patients.index') }}" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-x-circle"></i>
+                </a>
+            @endif
+        </form>
+    </div>
+</div>
 
         <div class="card shadow-sm ">
             <div class="card-body p-0">
@@ -96,6 +126,10 @@
 @endforeach
                     </tbody>
                 </table>
+
+                <div class="mt-3">
+    {{ $patients->appends(['search' => request('search')])->links() }}
+</div>
             </div>
         </div>
     </div>
