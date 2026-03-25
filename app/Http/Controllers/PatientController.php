@@ -60,12 +60,15 @@ public function edit($id)
 }
 
 
-public function show($id)
+public function show($id)//fonction pour afficher les détails d'un patient et ses consultations associées
 {
-    $patient = Patient::findOrFail($id);
-    return view('patients.show', compact('patient'));
-}
 
+    $patient = Patient::findOrFail($id);
+    $consultations = $patient->consultations()->orderBy('date_consultation', 'desc')->get();
+
+
+    return view('patients.show', compact('patient', 'consultations'));
+}
 public function destroy($id)
 {
     $patient = Patient::findOrFail($id);

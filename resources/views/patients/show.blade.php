@@ -35,4 +35,48 @@
         </div>
     </div>
 </div>
+<div class="card shadow border-0 mt-4">
+        <div class="card-header bg-dark text-danger">
+            <h5 class="mb-0"><i class="bi bi-journal-medical"></i> Historique des Consultations</h5>
+<a href="{{ route('consultations.create', $patient->id) }}" class="btn btn-sm btn-info text-white float-end">
+    <i class="bi bi-plus-circle"></i> Nouvelle Consultation
+</a>
+        </div>
+        <div class="card-body">
+            @if($consultations->isEmpty())
+                <p class="text-muted text-center my-3">Aucune consultation enregistrée pour ce patient.</p>
+            @else
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Diagnostic</th>
+                                <th>Traitement</th>
+                                <th>Signes vitaux</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($consultations as $consultation)
+                            <tr>
+                                <td>{{ \Carbon\Carbon::parse($consultation->date_consultation)->format('d/m/Y') }}</td>
+                                <td>{{ $consultation->diagnostic }}</td>
+                                <td>{{ $consultation->traitement }}</td>
+                                <td>
+                                    <small>
+                                        Tension : {{ $consultation->tension ?? '-' }}<br>
+                                        Poids : {{ $consultation->poids ? $consultation->poids.'kg' : '-' }}
+                                    </small>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </div>
+    </div>
+    ```
+
+
 @endsection
