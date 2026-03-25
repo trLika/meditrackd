@@ -76,16 +76,21 @@
         <span class="badge bg-info text-dark">{{ $patient->groupe_sanguin }}</span>
     </td>
     <td class="text-center">
+        <div class="d-flex justify-content-center gap-1">
         <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
         <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
-
+       <a href="{{ route('consultations.create', $patient->id) }}" class="btn btn-sm btn-outline-info">
+    <i class="bi bi-plus-circle"></i>
+</a>
         <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" class="d-inline">
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Supprimer ?')">
                 <i class="bi bi-trash"></i>
+
             </button>
         </form>
+        </div>
     </td>
 </tr>
 @endforeach

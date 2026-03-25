@@ -4,7 +4,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ConsultationController;
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -27,3 +27,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
+Route::get('patients/{patient}/consultations/create', [ConsultationController::class, 'create'])
+->name('consultations.create');
+Route::post('patients/{patient}/consultations', [ConsultationController::class, 'store'])
+->name('consultations.store');
