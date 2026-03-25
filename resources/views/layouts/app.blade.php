@@ -52,5 +52,21 @@
             @yield('content')
         </main>
     </div>
+   <script>
+    // Configuration : 3 minutes = 180 000 millisecondes
+    // On prévient l'utilisateur 30 secondes avant la fin (soit à 2min30)
+    let warningTime = 150000;
+    let logoutTime = 180000;
+
+    // 1. Alerte de prévention
+    setTimeout(function() {
+        alert("🔒 Sécurité MediTrackD : Votre session va expirer dans 30 secondes par inactivité.");
+    }, warningTime);
+
+    // 2. Redirection automatique vers le login à l'échéance
+    setTimeout(function() {
+        window.location.href = "{{ route('login') }}";
+    }, logoutTime);
+</script>
 </body>
 </html>
