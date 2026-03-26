@@ -76,7 +76,11 @@ public function show($id)//fonction pour afficher les détails d'un patient et s
 
     $patient = Patient::findOrFail($id);
     $consultations = $patient->consultations()->orderBy('date_consultation', 'desc')->get();
-
+ \App\Models\ActivityLog::create([
+        'user_id' => auth()->id(),
+        'action' => 'Consultation du dossier',
+        'patient_name' => $patient->nom . ' ' . $patient->prenom,
+    ]);//fonction de tracabilite
 
     return view('patients.show', compact('patient', 'consultations'));
 }

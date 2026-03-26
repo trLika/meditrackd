@@ -19,6 +19,17 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-4">
+    <div class="card bg-danger text-white shadow">
+        <div class="card-body">
+            <h5 class="card-title">CAS CRITIQUES</h5>
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="fw-bold">{{ $criticalCases }}</h2>
+                <i class="bi bi-exclamation-triangle-fill fs-1"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="col-md-4 mb-4">
             <div class="card bg-success text-white shadow">
@@ -33,6 +44,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 <div class="row mt-4">
 <div class="col-md-6 mb-4">
@@ -64,6 +76,7 @@
             }]
         }
     });
+
 </script>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
@@ -80,6 +93,41 @@
                         @endforelse
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow border-0">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i> Activités Récentes</h5>
+            </div>
+            <div class="card-body bg-secondary">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Utilisateur</th>
+                            <th>Action</th>
+                            <th>Patient</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($recentLogs as $log)
+                            <tr>
+                                <td><strong>{{ $log->user->name ?? 'Utilisateur inconnu' }}</strong></td>
+                                <td><span class="badge bg-secondary text-info">{{ $log->action }}</span></td>
+                                <td>{{ $log->patient_name }}</td>
+                                <td>{{ $log->created_at->diffForHumans() }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">Aucune activité enregistrée.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
