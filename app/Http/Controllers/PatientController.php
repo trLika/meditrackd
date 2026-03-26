@@ -42,9 +42,10 @@ public function create()
 public function store(Request $request)
 {
     $validated = $request->validate([
-        'nom' => 'required',
-        'prenom' => 'required',
+        'nom' => 'required|string|max:255',
+        'prenom' => 'required|string|max:255',
         'sexe' => 'required',
+        'date_naissance'=>'required|date',
         'telephone' => 'nullable',
         'adresse' => 'nullable',
         'groupe_sanguin' => 'nullable',

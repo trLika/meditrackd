@@ -58,11 +58,44 @@
 </div>
 
         <div class="col-md-6 mb-4">
-            <div class="card shadow-sm border-0 h-100">
-                <div class="card-header bg-dark fw-bold d-flex justify-content-beetween align-items-center text-danger">
-                   Les  derniers patients enregistrés
-                   <a href="{{ route('patients.index')}}" class="btn btn-outline-success border-0">Afficher tout</a>
-                </div>
+         <div class="card shadow border-0 h-100">
+    <div class="card-header bg-dark fw-bold d-flex justify-content-between align-items-center text-white">
+        <h5 class="mb-0">
+            <i class="bi bi-people me-2 text-danger"></i> Les derniers patients enregistrés
+        </h5>
+        <span class="badge bg-danger rounded-pill">{{ $totalPatients }} au total</span>
+    </div>
+
+    <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+        <table class="table table-hover mb-0">
+            <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
+                <tr>
+                    <th>NOM</th>
+                    <th>PRÉNOM</th>
+                    <th>ÂGE</th>
+                    <th>SEXE</th>
+                    <th>DATE D'AJOUT</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($recentPatients as $patient)
+                <tr>
+                    <td><strong>{{ $patient->nom }}</strong></td>
+                    <td>{{ $patient->prenom }}</td>
+                    <td>{{ $patient->age }} ans</td>
+                    <td>
+                        <span class="badge {{ $patient->sexe == 'M' ? 'bg-info' : 'bg-warning' }} text-dark">
+                            {{ $patient->sexe }}
+                        </span>
+                    </td>
+                    <td><small class="text-muted">{{ $patient->created_at->format('d/m/Y') }}</small></td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+        </table>
                 <div class="col-md-6">
 <script>
     const ctx = document.getElementById('bloodChart');
@@ -78,34 +111,24 @@
     });
 
 </script>
-                <div class="card-body p-0">
-                    <div class="list-group list-group-flush">
-                        @forelse($recentPatients as $patient)
-                            <a href="{{ route('patients.show', $patient->id) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                           <i class="bi bi-person-circle me-2 text-secondary"></i>
-                            {{ $patient->nom }} {{ $patient->prenom }}
-                            <span class="badge bg-light text-dark rounded-pill border">
-                                {{ $patient->created_at->diffForHumans() }}
-                            </span>
-                            </a>
-                        @empty
-                            <div class="p-4 text-center text-muted">Aucun patient pour le moment.</div>
-                        @endforelse
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+<!--niveau de tracabilite sur le dashboard-->
 <div class="row mt-4">
     <div class="col-12">
         <div class="card shadow border-0">
-            <div class="card-header bg-dark text-white">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i> Activités Récentes</h5>
+                 <span class="badge bg-secondary text-danger">{{ $recentLogs->count() }} logs affichés</span>
             </div>
-            <div class="card-body bg-secondary">
-                <table class="table table-hover">
-                    <thead>
+<!--Affichage du barre scrollante-->
+            <div class="card-body bg-secondary" style="max-height: 300px; overflow-y: auto">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light" style="position: sticky; top: 0; z-index: index: 1;">
                         <tr>
                             <th>Utilisateur</th>
                             <th>Action</th>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;//bibliotheque de date laravel
 
 class Patient extends Model
 {
@@ -10,6 +11,7 @@ class Patient extends Model
     'nom',
     'prenom',
     'sexe',
+    'date_naissance',
     'telephone',
     'adresse',
     'groupe_sanguin',
@@ -19,5 +21,12 @@ class Patient extends Model
 public function consultations()
 {
     return $this->hasMany(Consultation::class);
+}
+public function getAgeAttribute()//fonction pour calculer l'age
+{
+    if(!$this->date_naissance){
+        return '-';
+    }
+    return Carbon::parse($this->date_naissance)->age;
 }
 }

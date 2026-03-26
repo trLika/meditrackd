@@ -9,7 +9,7 @@ class DashboardController extends Controller
 
 public function index()
 {
-    $totalPatients = Patient::count();
+    $totalPatients = \App\Models\Patient::count();
     $consultationsToday = \App\Models\Consultation::whereDate('created_at', today())->count();
     $recentPatients = Patient::latest()->take(5)->get();
 
@@ -19,7 +19,7 @@ public function index()
         ->get();
 
         $criticalCases = Patient::where('is_critique', true)->count();
- $recentLogs = \App\Models\ActivityLog::with('user')->latest()->take(5)->get();
+ $recentLogs = \App\Models\ActivityLog::with('user')->latest()->take(20)->get();
 
    return view('dashboard', compact('totalPatients', 'consultationsToday', 'criticalCases',
    'groupesSanguins', 'recentPatients','recentLogs'));

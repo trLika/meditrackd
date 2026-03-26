@@ -24,7 +24,15 @@
                         <label class="form-label">Prénom</label>
                         <input type="text" name="prenom" class="form-control" placeholder="Ex: Aissatou" required>
                     </div>
-
+ <div class="mb-3">
+    <label for="date_naissance" class="form-label fw-bold">Date de Naissance</label>
+    <input type="date" name="date_naissance" id="date_naissance"
+           class="form-control @error('date_naissance') is-invalid @enderror"
+           required>
+    @error('date_naissance')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
 <div class="mb-3">
     <label class="form-label fw-bold">Sexe</label>
     <select name="sexe" class="form-select">
