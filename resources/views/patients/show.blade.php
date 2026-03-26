@@ -7,6 +7,11 @@
             <h5 class="mb-0">Les informations de votre patient : {{ $patient->nom }} {{ $patient->prenom }}</h5>
         </div>
 <!--bloc d'insertion des donnees du patients sur la fiche -->
+@if(auth()->user()->role === 'stagiaire')
+    <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> Mode lecture seule : Vous n'avez pas les droits pour modifier ce dossier.
+    </div>
+@endif
      <div class="card-body">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><strong>ID :</strong> #{{ $patient->id }}</li>
@@ -68,7 +73,10 @@
 
             <div class="mt-4">
                 <a href="{{ route('patients.index') }}" class="btn btn-danger">Retour à la liste</a>
-                <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary text-white">Modifier ce dossier</a>
+  @if(auth()->user()->role !== 'stagiaire')<!--fonction pour empecher le stagiaire de faire des modification-->
+                <a href="{{ route('patients.edit', $patient->id) }}"
+                 class="btn btn-primary text-white">Modifier ce dossier</a>
+                 @endif
             </div>
         </div>
     </div>

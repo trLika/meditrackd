@@ -21,10 +21,18 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-success">Liste des Patients</h2>
 
-               <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill px-4 shadow-sm border-0">
-    <i class="bi bi-person-plus-fill me-2"></i> Ajouter un Patient
+              <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-success">Liste des Patients</h2>
 
-              </a>
+   <!-- {{-- DEBUT DU BLOC A AJOUTER --}}-->
+    @if(auth()->user()->role !== 'stagiaire')
+        <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill">
+            <i class="bi bi-person-plus-fill me-2"></i> Ajouter un Patient
+        </a>
+    @endif
+    <!--{{-- FIN DU BLOC --}}-->
+
+</div>
 
         </div>
 
@@ -107,8 +115,12 @@
     </td>
     <td class="text-center">
         <div class="d-flex justify-content-center gap-1">
-        <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-eye"></i></a>
-        <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
+
+        <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-eye"></i></a>
+@if(auth()->user()->role !== 'stagiaire')
+            <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-sm btn-outline-warning">
+            <i class="bi bi-pencil"></i></a>
        <a href="{{ route('consultations.create', $patient->id) }}" class="btn btn-sm btn-outline-info">
     <i class="bi bi-plus-circle"></i>
 </a>
@@ -120,6 +132,7 @@
 
             </button>
         </form>
+        @endif
         </div>
     </td>
 </tr>

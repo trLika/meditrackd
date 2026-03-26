@@ -62,8 +62,12 @@ public function store(Request $request)
 
 public function edit($id)
 {
+    if (auth()->user()->role === 'stagiaire') {
+        return redirect()->route('patients.index')
+        ->with('error', 'Action non autorisée pour les stagiaires.');
     $patient = Patient::findOrFail($id);
     return view('patients.edit', compact('patient'));
+}
 }
 
 
@@ -86,6 +90,9 @@ public function destroy($id)
 //la fonction de mise a jour des donneees patients
 public function update(Request $request, Patient $patient)
 {
+    if (auth()->user()->role === 'stagiaire') {
+        abort(403, 'Action non autorisée.');
+    }
     $validated = $request->validate([
         'nom' => 'required',
         'prenom' => 'required',

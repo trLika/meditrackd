@@ -14,13 +14,30 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-    {
-        // User::factory(10)->create();
+{
+    // 1. Création de l'Administrateur
+    \App\Models\User::create([
+        'name' => 'Admin MediTrack',
+        'email' => 'admin@med.com',
+        'password' => bcrypt('password'),
+        'role' => 'admin',
+    ]);
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@med.com',
-            'password' => \Illuminate\Support\Facades\Hash::make('password'),
-        ]);
-    }
+    // 2. Création du Médecin
+    \App\Models\User::create([
+        'name' => 'Dr.Kate',
+        'email' => 'medecin@med.com',
+        'password' => bcrypt('password'),
+        'role' => 'medecin',
+    ]);
+
+    // 3. Création du Stagiaire (pour tester les restrictions plus tard)
+    \App\Models\User::create([
+        'name' => 'Stagiaire Miya',
+        'email' => 'stagiaire@med.com',
+        'password' => bcrypt('password'),
+        'role' => 'stagiaire',
+    ]);
 }
+}
+
