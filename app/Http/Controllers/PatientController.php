@@ -40,30 +40,24 @@ public function create()
 
 
 public function store(Request $request)
-
-
-
 {
-    $request->validate([
-        'nom' => 'required|string|max:255',
-        'prenom' => 'required|string|max:255',
-
-        'telephone' => 'required|unique:patients,telephone',
-        'groupe_sanguin' => 'required',
+    $validated = $request->validate([
+        'nom' => 'required',
+        'prenom' => 'required',
         'sexe' => 'required',
-        'adresse' => 'nullable|string|max:255',
-    ], [
-        'nom.required' => 'Le nom est obligatoire.',
-        'telephone.unique' => 'Ce numéro de téléphone est déjà attribué à un autre patient.',
-        'sexe.required' => 'Le sexe est obligatoire.',
-        'adresse.string' => 'L\'adresse doit être une chaîne de caractères.',
-
+        'telephone' => 'nullable',
+        'adresse' => 'nullable',
+        'groupe_sanguin' => 'nullable',
+        'antecedents' => 'nullable',
+        'is_critique' => 'boolean'
     ]);
 
-    Patient::create($request->all());
 
+    $validated['is_critique'] = $request->has('is_critique');
 
-    return redirect()->route('patients.index')->with('success', 'Patient enregistré !');
+    Patient::create($validated);
+
+    return redirect()->route('patients.index')->with('success', 'Patient ajouté !');
 }
 
 public function edit($id)
@@ -89,26 +83,25 @@ public function destroy($id)
 
     return redirect()->route('patients.index')->with('success', 'Patient supprimé avec succès.');
 }
-
-public function update(Request $request, $id)
-
+//la fonction de mise a jour des donneees patients
+public function update(Request $request, Patient $patient)
 {
-
-    $patient = Patient::findOrFail($id);
-
-
-    $request->validate([
-        'nom' => 'required|string|max:255',
-        'prenom' => 'required|string|max:255',
-
-        'telephone' => 'required|unique:patients,telephone,' . $id,
+    $validated = $request->validate([
+        'nom' => 'required',
+        'prenom' => 'required',
+        'sexe' => 'required',
+        'telephone' => 'nullable',
+        'adresse' => 'nullable',
+        'groupe_sanguin' => 'nullable',
+        'antecedents' => 'nullable', // Très important
     ]);
 
+    // Gestion spécifique de la checkbox (si décochée, elle n'est pas envoyée par le navigateur)
+    $validated['is_critique'] = $request->has('is_critique');
 
-    $patient->update($request->all());
+    $patient->update($validated);
 
-
-    return redirect()->route('patients.index')->with('success', 'Le patient a été mis à jour avec succès !');
+    return redirect()->route('patients.index')->with('success', 'Dossier patient mis à jour avec succès !');
 }
 
 }

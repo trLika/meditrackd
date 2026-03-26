@@ -15,10 +15,13 @@ return new class extends Migration
            $table->id();
         $table->string('nom');
         $table->string('prenom');
+        $table->string('sexe');
         $table->string('telephone')->nullable();
+        $table->text('adressse')->nullable();
         $table->date('date_naissance')->nullable();
         $table->string('groupe_sanguin')->nullable();
-        $table->text('antecedents')->nullable();     
+        $table->text('antecedents')->nullable();
+        $table->boolean('is_critique')->default(false);
         $table->timestamps();
         });
     }

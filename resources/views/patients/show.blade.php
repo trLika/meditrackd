@@ -6,12 +6,31 @@
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Les informations de votre patient : {{ $patient->nom }} {{ $patient->prenom }}</h5>
         </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>ID :</strong> #{{ $patient->id }}</li>
-                <li class="list-group-item"><strong>Téléphone :</strong> {{ $patient->telephone }}</li>
-                <li class="list-group-item"><strong>Groupe Sanguin :</strong> {{ $patient->groupe_sanguin }}</li>
-                <li class="list-group-item">
+<!--bloc d'insertion des donnees du patients sur la fiche -->
+     <div class="card-body">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>ID :</strong> #{{ $patient->id }}</li>
+        <li class="list-group-item"><strong>Téléphone :</strong> {{ $patient->telephone }}</li>
+        <li class="list-group-item"><strong>Groupe Sanguin :</strong> {{ $patient->groupe_sanguin }}</li>
+        <li class="list-group-item"><strong>Sexe :</strong> {{ $patient->sexe == 'M' ? 'Masculin' : 'Féminin' }}</li>
+        <li class="list-group-item"><strong>Adresse :</strong> {{ $patient->adresse }}</li>
+
+        <li class="list-group-item bg-light">
+            <strong><i class="bi bi-clipboard2-pulse text-danger"></i> Antécédents Médicaux :</strong>
+            <p class="mt-1 mb-0 text-muted">{{ $patient->antecedents ?? 'Aucun antécédent' }}</p>
+        </li>
+
+        @if($patient->is_critique)
+        <li class="list-group-item">
+            <span class="badge bg-danger w-100 p-2">
+                <i class="bi bi-exclamation-triangle"></i> CAS CRITIQUE
+            </span>
+        </li>
+        @endif
+
+        <li class="list-group-item"><strong>Date d'inscription :</strong> {{ $patient->created_at->format('d/m/Y') }}</li>
+    </ul>
+</div>
     <strong>Sexe :</strong>
     @if($patient->sexe == 'M')
         Masculin
@@ -27,7 +46,26 @@
     {{ $patient->adresse ?? 'Non renseignée' }}
 </li>
                 <li class="list-group-item"><strong>Date d'inscription :</strong> {{ $patient->created_at->format('d/m/Y') }}</li>
-            </ul>
+<li class="list-group-item">
+            <strong><i class="bi bi- clipboard2-pulse text-primary"></i> Antécédents :</strong>
+            <div class="mt-2 p-2 bg-light border rounded">
+                {{ $patient->antecedents ?? 'Aucun antécédent enregistré.' }}
+            </div>
+        </li>
+
+        @if($patient->is_critique)
+        <li class="list-group-item bg-light-danger">
+            <div class="alert alert-danger mb-0">
+                <i class="bi bi-exclamation-triangle-fill"></i> <strong>CAS CRITIQUE :</strong>
+                Une attention particulière est requise pour ce patient.
+            </div>
+        </li>
+        @endif
+    </ul> ```
+
+
+
+
             <div class="mt-4">
                 <a href="{{ route('patients.index') }}" class="btn btn-danger">Retour à la liste</a>
                 <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary text-white">Modifier ce dossier</a>
@@ -66,7 +104,7 @@
 <a href="{{ route('consultations.pdf', $consultation->id) }}" class="btn btn-sm btn-danger">
     <i class="bi bi-file-earmark-pdf"></i> PDF
 </a>
-      
+
                                     <small>
                                         Tension : {{ $consultation->tension ?? '-' }}<br>
                                         Poids : {{ $consultation->poids ? $consultation->poids.'kg' : '-' }}

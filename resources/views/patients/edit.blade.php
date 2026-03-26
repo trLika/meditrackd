@@ -53,7 +53,17 @@
                             <label class="form-label fw-bold">Adresse</label>
                             <textarea name="adresse" class="form-control" rows="3">{{ old('adresse', $patient->adresse) }}</textarea>
                         </div>
+                         <div class="mb-3">
+    <label for="antecedents" class="form-label">Antécédents Médicaux</label>
+    <textarea name="antecedents" id="antecedents" class="form-control" rows="3">{{ old('antecedents', $patient->antecedents) }}</textarea>
+</div>
 
+<div class="mb-3 form-check form-switch">
+    <input class="form-check-input" type="checkbox" name="is_critique" id="is_critique" value="1" {{ $patient->is_critique ? 'checked' : '' }}>
+    <label class="form-check-label text-danger" for="is_critique">
+        <strong>Marquer comme Cas Critique</strong>
+    </label>
+</div>
                         <div class="d-flex justify-content-between mt-4">
                             <a href="{{ route('patients.index') }}" class="btn btn-danger px-4">Annuler</a>
                             <button type="submit" class="btn btn-warning text-white px-4 fw-bold">Enregistrer les modifications</button>
