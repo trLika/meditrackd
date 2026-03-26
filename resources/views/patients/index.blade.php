@@ -21,8 +21,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold text-success">Liste des Patients</h2>
 
-              <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-success">Liste des Patients</h2>
+             
 
    <!-- {{-- DEBUT DU BLOC A AJOUTER --}}-->
     @if(auth()->user()->role !== 'stagiaire')
