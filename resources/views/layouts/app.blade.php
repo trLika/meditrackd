@@ -47,10 +47,11 @@
         </div>
     </div>
 </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+     <main style="height: 100vh; overflow: hidden; display: flex; flex-direction: column;">
+    <div style="flex: 1; overflow-y: auto; padding: 20px;">
+        @yield('content')
+    </div>
+</main>
     </div>
    <script>
     // Configuration : 3 minutes = 180 000 millisecondes

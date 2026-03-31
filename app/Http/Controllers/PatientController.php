@@ -63,12 +63,18 @@ public function store(Request $request)
 
 public function edit($id)
 {
+    // On récupère le patient par son ID
+    $patient = Patient::findOrFail($id);
+
+    // Vérification de sécurité : Seul un stagiaire est bloqué
+    // Si tu es médecin, cette condition est ignorée
     if (auth()->user()->role === 'stagiaire') {
         return redirect()->route('patients.index')
-        ->with('error', 'Action non autorisée pour les stagiaires.');
-    $patient = Patient::findOrFail($id);
+            ->with('error', 'Action non autorisée pour les stagiaires.');
+    }
+
+    // Si on arrive ici, c'est qu'on est médecin ou admin
     return view('patients.edit', compact('patient'));
-}
 }
 
 
@@ -112,6 +118,14 @@ public function update(Request $request, Patient $patient)
     $validated['is_critique'] = $request->has('is_critique');
 
     $patient->update($validated);
+
+    //restriction de la tracabilite
+    // Enregistrement de l'activité pour la traçabilité
+\App\Models\ActivityLog::create([
+    'user_id' => auth()->id(),
+    'action' => 'Mise à jour dossier',
+    'patient_name' => $patient->nom . ' ' . $patient->prenom,
+]);
 
     return redirect()->route('patients.index')->with('success', 'Dossier patient mis à jour avec succès !');
 }

@@ -18,6 +18,7 @@
         <li class="list-group-item"><strong>Téléphone :</strong> {{ $patient->telephone }}</li>
         <li class="list-group-item"><strong>Groupe Sanguin :</strong> {{ $patient->groupe_sanguin }}</li>
         <li class="list-group-item"><strong>Sexe :</strong> {{ $patient->sexe == 'M' ? 'Masculin' : 'Féminin' }}</li>
+       <li class="list-group-item"><strong>Âge :</strong> {{ $patient->age }} ans</li>
         <li class="list-group-item"><strong>Adresse :</strong> {{ $patient->adresse }}</li>
 
         <li class="list-group-item bg-light">

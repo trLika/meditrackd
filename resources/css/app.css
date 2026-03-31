@@ -3,6 +3,31 @@
 }*/
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+/* Empêche le scroll sur toute la page pour fixer l'interface */
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Structure principale : occupe toute la hauteur disponible */
+.main-wrapper {
+    display: flex;
+    height: 100vh; /* 100% de la hauteur de la fenêtre */
+}
+
+/* Le contenu central qui doit scroller */
+.content-area {
+    flex: 1;
+    overflow-y: auto; /* Active la barre de scroll uniquement ici */
+    padding: 20px;
+    height: 100%;
+}
+.scrollable-module {
+    max-height: 400px; /* Taille fixe pour le module */
+    overflow-y: auto;  /* Barre de scroll verticale si le contenu dépasse */
+    border: 1px solid #ddd;
+}
 body {
     background:linear-gradient(-50deg, #ccf0b2, #ccf0b2, #ccf0b2, #d0aab5);
 background-size: auto;
@@ -37,7 +62,10 @@ animation:gradient 15s ease infinite;
 }
 
 
-
+.bg-pink {
+    background-color: #d63384 !important; /* Le rose officiel de la palette Bootstrap */
+    color: white !important;
+}
 
 #app .custom-navbar {
 

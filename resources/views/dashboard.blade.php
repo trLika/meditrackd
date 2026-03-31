@@ -19,14 +19,18 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
+
     <div class="card bg-danger text-white shadow">
+        <a href="{{ route('patients.index', ['filter' => 'critique']) }} " class="text-decoration-none text-white">
         <div class="card-body">
             <h5 class="card-title">CAS CRITIQUES</h5>
             <div class="d-flex justify-content-between align-items-center">
                 <h2 class="fw-bold">{{ $criticalCases }}</h2>
                 <i class="bi bi-exclamation-triangle-fill fs-1"></i>
             </div>
+            </a>
         </div>
     </div>
 </div>
@@ -66,7 +70,7 @@
         <span class="badge bg-danger rounded-pill">{{ $totalPatients }} au total</span>
     </div>
 
-    <div class="card-body p-0" style="max-height: 300px; overflow-y: auto;">
+    <div class="card-body scrollable-module">
         <table class="table table-hover mb-0">
             <thead class="table-light" style="position: sticky; top: 0; z-index: 1;">
                 <tr>
@@ -79,16 +83,19 @@
             </thead>
             <tbody>
                 @foreach($recentPatients as $patient)
-                <tr>
-                    <td><strong>{{ $patient->nom }}</strong></td>
+                <tr class="clickable-row" data-href="{{ route('patients.show', $patient->id) }}" style="cursor: pointer;">
+                    <td>
+                        <strong>{{ $patient->nom }}</strong>  </td>
                     <td>{{ $patient->prenom }}</td>
                     <td>{{ $patient->age }} ans</td>
                     <td>
-                        <span class="badge {{ $patient->sexe == 'M' ? 'bg-info' : 'bg-warning' }} text-dark">
+
+                    <span class="badge {{ $patient->sexe == 'M' ? 'bg-info' : 'bg-pink' }} text-dark">
                             {{ $patient->sexe }}
                         </span>
                     </td>
                     <td><small class="text-muted">{{ $patient->created_at->format('d/m/Y') }}</small></td>
+                      <td>
                 </tr>
                 @endforeach
             </tbody>
@@ -118,6 +125,7 @@
     </div>
 </div>
 <!--niveau de tracabilite sur le dashboard-->
+@if(auth()->user()->role === 'admin')
 <div class="row mt-4">
     <div class="col-12">
         <div class="card shadow border-0">
@@ -125,8 +133,9 @@
                 <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i> Activités Récentes</h5>
                  <span class="badge bg-secondary text-danger">{{ $recentLogs->count() }} logs affichés</span>
             </div>
+
 <!--Affichage du barre scrollante-->
-            <div class="card-body bg-secondary" style="max-height: 300px; overflow-y: auto">
+            <div class="card-body bg-secondary scrollable-module">
                 <table class="table table-hover align-middle">
                     <thead class="table-light" style="position: sticky; top: 0; z-index: index: 1;">
                         <tr>
@@ -155,4 +164,15 @@
         </div>
     </div>
 </div>
+@endif
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const rows = document.querySelectorAll(".clickable-row");
+    rows.forEach(row => {
+        row.addEventListener("click", function() {
+            window.location.href = this.dataset.href;
+        });
+    });
+});
+</script>
 @endsection
