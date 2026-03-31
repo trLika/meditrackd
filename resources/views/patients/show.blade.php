@@ -12,6 +12,12 @@
         <i class="bi bi-info-circle"></i> Mode lecture seule : Vous n'avez pas les droits pour modifier ce dossier.
     </div>
 @endif
+@if($patient->is_critique)
+        <div class="alert alert-danger mb-0">
+                <i class="bi bi-exclamation-triangle-fill"></i> <strong>CAS CRITIQUE :</strong>
+                Une attention particulière est requise pour ce patient.
+            </div>
+        @endif
      <div class="card-body">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><strong>ID :</strong> #{{ $patient->id }}</li>
@@ -19,55 +25,36 @@
         <li class="list-group-item"><strong>Groupe Sanguin :</strong> {{ $patient->groupe_sanguin }}</li>
         <li class="list-group-item"><strong>Sexe :</strong> {{ $patient->sexe == 'M' ? 'Masculin' : 'Féminin' }}</li>
        <li class="list-group-item"><strong>Âge :</strong> {{ $patient->age }} ans</li>
-        <li class="list-group-item"><strong>Adresse :</strong> {{ $patient->adresse }}</li>
+
+</li>
+
+
 
         <li class="list-group-item bg-light">
             <strong><i class="bi bi-clipboard2-pulse text-danger"></i> Antécédents Médicaux :</strong>
             <p class="mt-1 mb-0 text-muted">{{ $patient->antecedents ?? 'Aucun antécédent' }}</p>
         </li>
 
-        @if($patient->is_critique)
-        <li class="list-group-item">
-            <span class="badge bg-danger w-100 p-2">
-                <i class="bi bi-exclamation-triangle"></i> CAS CRITIQUE
-            </span>
-        </li>
-        @endif
 
-        <li class="list-group-item"><strong>Date d'inscription :</strong> {{ $patient->created_at->format('d/m/Y') }}</li>
-    </ul>
+
+
 </div>
-    <strong>Sexe :</strong>
-    @if($patient->sexe == 'M')
-        Masculin
-    @elseif($patient->sexe == 'F')
-        Féminin
-    @else
-        <span class="text-muted">Non renseigné</span>
-    @endif
-</li>
-                <li class="list-group-item">
+               <li class="list-group-item">
     <i class="bi bi-geo-alt-fill text-danger me-2"></i>
     <strong>Adresse :</strong>
     {{ $patient->adresse ?? 'Non renseignée' }}
 </li>
                 <li class="list-group-item"><strong>Date d'inscription :</strong> {{ $patient->created_at->format('d/m/Y') }}</li>
 <li class="list-group-item">
-            <strong><i class="bi bi- clipboard2-pulse text-primary"></i> Antécédents :</strong>
-            <div class="mt-2 p-2 bg-light border rounded">
-                {{ $patient->antecedents ?? 'Aucun antécédent enregistré.' }}
-            </div>
+
         </li>
 
         @if($patient->is_critique)
         <li class="list-group-item bg-light-danger">
-            <div class="alert alert-danger mb-0">
-                <i class="bi bi-exclamation-triangle-fill"></i> <strong>CAS CRITIQUE :</strong>
-                Une attention particulière est requise pour ce patient.
-            </div>
+
         </li>
         @endif
-    </ul> ```
+    </ul>
 
 
 
@@ -82,11 +69,47 @@
         </div>
     </div>
 </div>
+
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-dark text-primary d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-capsule"></i> Historique des Ordonnances</h5>
+        <a href="{{ route('ordonnances.create', $patient->id) }}" class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-circle"></i> Nouvelle Ordonnance
+        </a>
+    </div>
+    <div class="card-body">
+        @if($patient->ordonnances->count() > 0)
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($patient->ordonnances as $ordonnance)
+                        <tr>
+                            <td>{{ $ordonnance->created_at->format('d/m/Y') }}</td>
+                            <td>
+                                <a href="{{ route('ordonnances.pdf', $ordonnance->id) }}" class="btn btn-sm btn-danger">PDF</a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @else
+            <p class="text-center text-muted">Aucune ordonnance enregistrée.</p>
+        @endif
+    </div>
+</div>
+
+
+
 <div class="card shadow border-0 mt-4">
-        <div class="card-header bg-dark text-danger">
+        <div class="card-header bg-dark text-info">
             <h5 class="mb-0"><i class="bi bi-journal-medical"></i> Historique des Consultations</h5>
 <a href="{{ route('consultations.create', $patient->id) }}" class="btn btn-sm btn-info text-white float-end">
-    <i class="bi bi-plus-circle"></i> Nouvelle Consultation
+    <i class="bi bi-plus-circle "></i> Nouvelle Consultation
 </a>
   </div>
         <div class="card-body">
@@ -110,9 +133,6 @@
                                 <td>{{ $consultation->diagnostic }}</td>
                                 <td>{{ $consultation->traitement }}</td>
                                 <td>
-<a href="{{ route('consultations.pdf', $consultation->id) }}" class="btn btn-sm btn-danger">
-    <i class="bi bi-file-earmark-pdf"></i> PDF
-</a>
 
                                     <small>
                                         Tension : {{ $consultation->tension ?? '-' }}<br>
@@ -129,7 +149,6 @@
             @endif
         </div>
     </div>
-    ```
 
 
 @endsection

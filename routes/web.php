@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\OrdonnanceController;
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
@@ -33,3 +34,7 @@ Route::post('patients/{patient}/consultations', [ConsultationController::class, 
 ->name('consultations.store');
 Route::get('/consultations/{id}/pdf', [ConsultationController::class, 'generatePDF'])
 ->name('consultations.pdf');
+
+Route::get('/ordonnances/create/{patient_id}', [OrdonnanceController::class, 'create'])->name('ordonnances.create');
+Route::post('/ordonnances/store', [OrdonnanceController::class, 'store'])->name('ordonnances.store');
+Route::get('/ordonnances/pdf/{id}', [OrdonnanceController::class, 'generatePDF'])->name('ordonnances.pdf');

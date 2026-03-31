@@ -6,16 +6,22 @@
     <h2 class="mb-4 ">Tableau de Bord</h2>
 
     <div class="row">
+
         <div class="col-md-4 mb-4">
+
             <div class="card bg-primary text-white shadow">
+
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
+
                         <div>
                             <h6 class="text-uppercase"> nombre Total de Patients enregistré</h6>
+
                             <h1 class="display-4 fw-bold ">{{ $totalPatients }}</h1>
                         </div>
                         <i class="bi bi-people fs-1 opacity-50"></i>
                     </div>
+                    
                 </div>
             </div>
         </div>

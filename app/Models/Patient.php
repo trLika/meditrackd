@@ -29,4 +29,10 @@ public function getAgeAttribute()//fonction pour calculer l'age
     }
     return Carbon::parse($this->date_naissance)->age;
 }
+// Dans Patient.php
+public function ordonnances()
+{
+    
+    return $this->hasMany(Ordonnance::class);
+}
 }
