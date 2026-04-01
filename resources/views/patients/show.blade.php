@@ -73,7 +73,9 @@
 <div class="card shadow-sm mt-4">
     <div class="card-header bg-dark text-primary d-flex justify-content-between align-items-center">
         <h5 class="mb-0"><i class="bi bi-capsule"></i> Historique des Ordonnances</h5>
-        <a href="{{ route('ordonnances.create', $patient->id) }}" class="btn btn-primary btn-sm">
+
+        <a href="{{ route('ordonnances.create', ['patient_id' => $patient->id]) }}"
+         class="btn btn-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Nouvelle Ordonnance
         </a>
     </div>
@@ -92,7 +94,21 @@
                             <td>{{ $ordonnance->created_at->format('d/m/Y') }}</td>
                             <td>
                                 <a href="{{ route('ordonnances.pdf', $ordonnance->id) }}" class="btn btn-sm btn-danger">PDF</a>
+@if(auth()->id() == $ordonnance->user_id)
+                                <a href="{{ route('ordonnances.edit', $ordonnance->id) }}" class="btn btn-sm btn-warning">
+            <i class="bi bi-pencil"></i>
+        </a>
+               <form action="{{ route('ordonnances.destroy', $ordonnance->id) }}"
+                method="POST" onsubmit="return confirm('Supprimer cette ordonnance ?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-outline-dark">
+                <i class="bi bi-trash"></i>
+            </button>
+             </form>
+@endif
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -124,6 +140,7 @@
                                 <th>Diagnostic</th>
                                 <th>Traitement</th>
                                 <th>Signes vitaux</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -136,7 +153,7 @@
 
                                     <small>
                                         Tension : {{ $consultation->tension ?? '-' }}<br>
-                                        Poids : {{ $consultation->poids ? $consultation->poids.'kg' : '-' }}
+                                        Poids : {{ $consultation->poids ? $consultation->poids . 'kg' : '-' }}
                                     </small>
                                 </td>
 

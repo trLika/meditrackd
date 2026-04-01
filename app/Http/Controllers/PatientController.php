@@ -12,9 +12,8 @@ class PatientController extends Controller
         $this->middleware('auth');// On s'assure que toutes les méthodes de ce contrôleur nécessitent une authentification
     }
 
-    public function index(Request $request)
+public function index(Request $request)
 {
-
     $query = Patient::query();
 
 
@@ -27,11 +26,21 @@ class PatientController extends Controller
         });
     }
 
+if ($request->query('critique') == '1') {
+        $query->where('is_critique', 1);
+    }
+
+    if ($request->get('filter') == 'today') {
+        $query->whereHas('consultations', function($q) {
+            $q->whereDate('created_at', today());
+        });
+    }
 
     $patients = $query->orderBy('nom', 'asc')->paginate(10);
 
     return view('patients.index', compact('patients'));
 }
+
 
 public function create()
 {

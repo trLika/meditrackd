@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Patient;
+use App\Models\Consultation;
+use App\Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
 
@@ -12,6 +14,7 @@ public function index()
     $totalPatients = \App\Models\Patient::count();
     $consultationsToday = \App\Models\Consultation::whereDate('created_at', today())->count();
     $recentPatients = Patient::latest()->take(5)->get();
+
 
 
     $groupesSanguins = Patient::select('groupe_sanguin', \DB::raw('count(*) as total'))

@@ -19,9 +19,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('patients', PatientController::class);
 
-    // Ajoute ici TOUS tes futurs modules
-    // Route::resource('consultations', ConsultationController::class);
-    // Route::resource('ordonnances', OrdonnanceController::class);
+
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -35,6 +33,8 @@ Route::post('patients/{patient}/consultations', [ConsultationController::class, 
 Route::get('/consultations/{id}/pdf', [ConsultationController::class, 'generatePDF'])
 ->name('consultations.pdf');
 
-Route::get('/ordonnances/create/{patient_id}', [OrdonnanceController::class, 'create'])->name('ordonnances.create');
-Route::post('/ordonnances/store', [OrdonnanceController::class, 'store'])->name('ordonnances.store');
-Route::get('/ordonnances/pdf/{id}', [OrdonnanceController::class, 'generatePDF'])->name('ordonnances.pdf');
+
+//les routes pour les actions concernant les ordonnances
+Route::get('ordonnances/{id}/pdf', [OrdonnanceController::class, 'generatePDF'])
+->name('ordonnances.pdf');
+Route::resource('ordonnances', OrdonnanceController::class);

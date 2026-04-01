@@ -18,14 +18,14 @@
 <div class="container-fluid py-3" style="height: 100vh; display: flex; flex-direction: column;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold text-success m-0">Liste des Patients</h2>
-        @if(auth()->user()->role !== 'stagiaire')
+
             <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill shadow-sm">
                 <i class="bi bi-person-plus-fill me-1"></i> Ajouter
             </a>
-        @endif
+
     </div>
 
-    <div class="row justify-content-center mb-3">
+ <div class="row justify-content-center mb-3">
         <div class="col-md-5">
             <form action="{{ route('patients.index') }}" method="GET" class="input-group shadow-sm">
                 <input type="text" name="search" class="form-control" placeholder="Rechercher..." value="{{ request('search') }}">
@@ -35,6 +35,31 @@
             </form>
         </div>
     </div>
+
+@if(request()->has('critique'))
+    <div class="alert alert-danger py-2 px-3 mb-2 d-flex justify-content-between align-items-center shadow-sm small">
+        <span><i class="bi bi-exclamation-triangle-fill"></i> <strong>Mode Critique</strong></span>
+        <a href="{{ route('patients.index') }}" class="btn btn-xs btn-link text-danger p-0 text-decoration-none">Annuler</a>
+    </div>
+@endif
+
+<div class="card shadow-sm">
+    <div class="card-body p-0 color"> @if($patients->isEmpty())
+            <div class="text-center py-4">
+                <i class="bi bi-folder-x  display-4 text-muted"></i>
+                <p class="mb-2">Aucun patient trouvé.</p>
+                <a href="{{ route('patients.index') }}" class="btn btn-sm btn-success">Voir tout</a>
+            </div>
+        @else
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    </table>
+            </div>
+        @endif
+    </div>
+</div>
+
+
 <div class="card shadow-sm" style="height: auto; max-height: 80vh; overflow: hidden; display: flex; flex-direction: column;">
         <div class="table-responsive" style="overflow-y: auto; flex: 1;">
             <table class="table table-hover align-middle mb-0">
@@ -69,8 +94,10 @@
  @if(auth()->user()->role !== 'stagiaire')
             <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-sm btn-outline-warning btn-sm" title="Modifier">
             <i class="bi bi-pencil"></i></a>
-       <a href="{{ route('consultations.create', $patient->id) }}" class="btn btn-sm btn-outline-info btn-sm" title="Ajouter une consultation">
-    <i class="bi bi-plus-circle"></i>
+       <a href="{{ route('consultations.create', $patient->id) }}"
+       class="btn btn-sm btn-outline-info btn-sm" title="Ajouter une consultation">
+    <i class="bi bi-plus-cir
+    cle"></i>
 </a>
         <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')">
             @csrf
@@ -125,6 +152,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
+
+
+
 
 </body>
 </html>

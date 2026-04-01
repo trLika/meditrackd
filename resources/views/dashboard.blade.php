@@ -9,10 +9,10 @@
 
         <div class="col-md-4 mb-4">
 
-            <div class="card bg-primary text-white shadow">
+            <div class="card bg-success text-white shadow shadow h-100 position-relative">
 
                 <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center ">
 
                         <div>
                             <h6 class="text-uppercase"> nombre Total de Patients enregistré</h6>
@@ -21,15 +21,15 @@
                         </div>
                         <i class="bi bi-people fs-1 opacity-50"></i>
                     </div>
-                    
+             <a href="{{ route('patients.index') }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
 
-    <div class="card bg-danger text-white shadow">
-        <a href="{{ route('patients.index', ['filter' => 'critique']) }} " class="text-decoration-none text-white">
+    <div class="card bg-danger text-white shadow  position-relative">
+        <a href="{{ route('patients.index', ['critique' => 1]) }} " class="text-decoration-none text-white">
         <div class="card-body">
             <h5 class="card-title">CAS CRITIQUES</h5>
             <div class="d-flex justify-content-between align-items-center">
@@ -42,7 +42,7 @@
 </div>
 
         <div class="col-md-4 mb-4">
-            <div class="card bg-success text-white shadow">
+            <div class="card bg-info text-white shadow shadow h-100 position-relative">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -51,14 +51,21 @@
                         </div>
                         <i class="bi bi-calendar-check fs-1 opacity-50"></i>
                     </div>
+                    <a href="{{ route('patients.index', ['filter' => 'today']) }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>
 
+
+
+
+
+
     </div>
 <div class="row mt-4">
 <div class="col-md-6 mb-4">
-    <div class="card shadow-sm border-0 h-100 "> <div class="card-header bg-danger fw-bold text-dark">Répartition par Groupe Sanguin</div>
+    <div class="card shadow-sm border-0 h-100 ">
+         <div class="card-header bg-danger fw-bold text-white">Répartition par Groupe Sanguin</div>
         <div class="card-body  d-flex justify-content-center align-items-center">
        <div style="max-height: 300px; width: 100%;">
         <canvas id="bloodChart"></canvas>
@@ -66,6 +73,16 @@
     </div>
 </div>
 </div>
+<style>
+    .card.position-relative {
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+    .card.position-relative:hover {
+        transform: translateY(-5px); /* Le bloc se soulève légèrement */
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+    }
+</style>
 
         <div class="col-md-6 mb-4">
          <div class="card shadow border-0 h-100">
@@ -137,7 +154,7 @@
         <div class="card shadow border-0">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
                 <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i> Activités Récentes</h5>
-                 <span class="badge bg-secondary text-danger">{{ $recentLogs->count() }} logs affichés</span>
+                 <span class="badge bg-danger text-white">{{ $recentLogs->count() }} logs affichés</span>
             </div>
 
 <!--Affichage du barre scrollante-->
