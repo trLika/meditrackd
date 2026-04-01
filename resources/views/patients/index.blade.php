@@ -38,8 +38,10 @@
 
 @if(request()->has('critique'))
     <div class="alert alert-danger py-2 px-3 mb-2 d-flex justify-content-between align-items-center shadow-sm small">
-        <span><i class="bi bi-exclamation-triangle-fill"></i> <strong>Mode Critique</strong></span>
-        <a href="{{ route('patients.index') }}" class="btn btn-xs btn-link text-danger p-0 text-decoration-none">Annuler</a>
+        <span><i class="bi bi-exclamation-triangle-fill"></i>
+        <strong >Ceci est la liste de vos cas critique</strong></span>
+        <a href="{{ route('patients.index') }}"
+        class="btn btn-xs btn-link text-danger p-0 text-decoration-none">Annuler le filtre </a>
     </div>
 @endif
 
@@ -87,7 +89,7 @@
     <td>
     {{ $patient->groupe_sanguin }}
     </td>
-    <td class="text-center">
+    <td class="text-center ">
         <div class="d-flex justify-content-center align-items-center gap-2">
 <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-primary btn-sm" title="Voir les détails">
             <i class="bi bi-eye"></i></a>
@@ -96,8 +98,7 @@
             <i class="bi bi-pencil"></i></a>
        <a href="{{ route('consultations.create', $patient->id) }}"
        class="btn btn-sm btn-outline-info btn-sm" title="Ajouter une consultation">
-    <i class="bi bi-plus-cir
-    cle"></i>
+    <i class="bi bi-plus-circle"></i>
 </a>
         <form action="{{ route('patients.destroy', $patient->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')">
             @csrf

@@ -120,7 +120,8 @@ public function update(Request $request, Patient $patient)
         'telephone' => 'nullable',
         'adresse' => 'nullable',
         'groupe_sanguin' => 'nullable',
-        'antecedents' => 'nullable', // Très important
+        'antecedents' => 'nullable',
+        'allergies' => 'nullable|string', 
     ]);
 
     // Gestion spécifique de la checkbox (si décochée, elle n'est pas envoyée par le navigateur)

@@ -11,13 +11,31 @@
     <div class="alert alert-info">
         <i class="bi bi-info-circle"></i> Mode lecture seule : Vous n'avez pas les droits pour modifier ce dossier.
     </div>
-@endif
-@if($patient->is_critique)
-        <div class="alert alert-danger mb-0">
-                <i class="bi bi-exclamation-triangle-fill"></i> <strong>CAS CRITIQUE :</strong>
-                Une attention particulière est requise pour ce patient.
-            </div>
         @endif
+
+
+
+@if($patient->is_critique || !empty($patient->allergies))
+    <div class="alert {{ $patient->is_critique ? 'alert-danger' : 'alert-warning' }} shadow-sm">
+        <div class="d-flex">
+            <i class="bi bi-exclamation-triangle-fill fs-4 me-2"></i>
+            <div>
+                <strong>Alerte Médicale :</strong>
+                <ul class="mb-0">
+                    @if($patient->is_critique)
+                        <li>Cas Critique : Vigilance accrue requise.</li>
+                    @endif
+                    @if($patient->allergies)
+                        <li>Allergies : {{ $patient->allergies }}</li>
+                    @endif
+                </ul>
+            </div>
+        </div>
+    </div>
+@endif
+
+
+
      <div class="card-body">
     <ul class="list-group list-group-flush">
         <li class="list-group-item"><strong>ID :</strong> #{{ $patient->id }}</li>
@@ -140,7 +158,7 @@
                                 <th>Diagnostic</th>
                                 <th>Traitement</th>
                                 <th>Signes vitaux</th>
-                                
+
                             </tr>
                         </thead>
                         <tbody>

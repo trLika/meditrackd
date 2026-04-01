@@ -68,6 +68,20 @@
     <textarea name="antecedents" id="antecedents" class="form-control" rows="3">{{ old('antecedents', $patient->antecedents) }}</textarea>
 </div>
 
+
+<div class="mb-3">
+    <label for="allergies" class="form-label fw-bold text-danger">
+        <i class="bi bi-exclamation-triangle"></i> Allergies & Intolérances
+    </label>
+    <textarea name="allergies" id="allergies" class="form-control @error('allergies') is-invalid @enderror"
+              rows="3" placeholder="Ex: Pénicilline, pollens, arachides...">{{ old('allergies', $patient->allergies) }}</textarea>
+    @error('allergies')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+    <div class="form-text">Laissez vide s'il n'y a aucune allergie connue.</div>
+</div>
+
+
 <div class="mb-3 form-check form-switch">
     <input class="form-check-input" type="checkbox" name="is_critique" id="is_critique" value="1" {{ $patient->is_critique ? 'checked' : '' }}>
     <label class="form-check-label text-danger" for="is_critique">
