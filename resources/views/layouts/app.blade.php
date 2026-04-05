@@ -3,71 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediTrackD votre système de gestion  intégré de dossiers médicaux</title>
+    <title>MediTrackD</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
+
     <div id="app">
-     <nav class="navbar navbar-expand-lg navbar-dark  shadow-sm">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="{{ url('/') }}">MediTrackD</a>
+        @if(Auth::check() && (request()->is('dashboard*') || request()->is('patients*')))
+            <div class="d-flex">
+                <nav class="bg-dark text-white shadow" style="width: 260px; position: fixed; height: 100vh; z-index: 1000;">
+                    <div class="p-4">
+                        <h4 class="text-danger fw-bold mb-4">MediTrackD</h4>
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item mb-2">
+                                <a href="/" class="nav-link text-white"><i class="bi bi-house-door me-2"></i> Accueil</a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a href="{{ route('dashboard') }}" class="nav-link text-white {{ request()->is('dashboard') ? 'active' : '' }}">
+                                    <i class="bi bi-speedometer2 me-2"></i> Tableau de bord
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a href="{{ route('patients.index') }}" class="nav-link text-white {{ request()->is('patients*') ? 'active' : '' }}">
+                                    <i class="bi bi-people me-2"></i> Patients
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
 
-        <button class="navbar-toggler bg-success" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+<div class="flex-grow-1" style="margin-left: 260px; min-height: 100vh; background: transparent;">
 
-       <div class="collapse navbar-collapse" id="mainNavbar">
-    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ url('/') }}">Accueil</a>
-        </li>
-
-        @auth
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('dashboard') }}">Tableau de Bord</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('patients.index') }}">Patients</a>
-            </li>
-            <li class="nav-item">
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-link nav-link text-danger" style="text-decoration: none;">
-                        Déconnexion
-                    </button>
-                </form>
-            </li>
-        @else
-            <li class="nav-item">
-                <a class="nav-link btn btn-success text-white px-3" href="{{ route('login') }}">Connexion</a>
-            </li>
-        @endauth
-    </ul>
-</div>
+    <header class="navbar navbar-expand-md navbar-light bg-transparent py-3 px-4 mb-3">
+        <div class="container-fluid">
+            <div class="ms-auto dropdown">
+                <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-1"></i> Admin MediTrack
+                </a>
+                </div>
         </div>
-    </div>
-</nav>
-     <main style="height: 100vh; overflow: hidden; display: flex; flex-direction: column;">
-    <div style="flex: 1; overflow-y: auto; padding: 20px;">
+    </header>
+
+    <main class="px-4">
         @yield('content')
-    </div>
-</main>
-    </div>
-   <script>
-    // Configuration : 3 minutes = 180 000 millisecondes
-    // On prévient l'utilisateur 30 secondes avant la fin (soit à 2min30)
-    let warningTime = 150000;
-    let logoutTime = 180000;
+    </main>
+</div>
 
-    //  Alerte de prévention
-    setTimeout(function() {
-        alert("🔒 Sécurité MediTrackD : Votre session va expirer dans 30 secondes par inactivité.");
-    }, warningTime);
-
-    // Redirection automatique vers le login à l'échéance
-    setTimeout(function() {
-        window.location.href = "{{ route('login') }}";
-    }, logoutTime);
-</script>
+        @else
+            <div class="min-vh-100">@yield('content')</div>
+        @endif
+    </div>
 </body>
 </html>

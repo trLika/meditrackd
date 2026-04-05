@@ -1,124 +1,177 @@
-/*{
-    border: 5px solid red;
-}*/
+/* ==========================================================
+   Fichier app.css - Garde TON DESIGN mais règle les bugs
+   ========================================================== */
+
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
-/* Empêche le scroll sur toute la page pour fixer l'interface */
+
+
+
+
+
+/* 1. Règle du fond et animation (TON DESIGN) */
 body, html {
     height: 100%;
     margin: 0;
-    overflow: hidden;
+    overflow: hidden; /* Nécessaire pour fixer l'interface */
 }
 
-/* Structure principale : occupe toute la hauteur disponible */
+body {
+    background: linear-gradient(-50deg, #640629, #74d1f8, #b2daf0, #a34862);
+    background-size: 400% 400%;
+    animation: gradientMove 15s ease infinite;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 2. Fixation de la Sidebar (STRUCTURE PROPRE) */
 .main-wrapper {
     display: flex;
-    height: 100vh; /* 100% de la hauteur de la fenêtre */
+    height: 100vh;
 }
 
-/* Le contenu central qui doit scroller */
-.content-area {
+.bg-dark {
+    background-color: #1a1d21 !important; /* Ta couleur noire */
+}
+
+/* 3. La Zone de Contenu à droite (Règle ton scroll et ta couleur) */
+.flex-grow-1 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 260px; /* Laisse la place pour la sidebar */
+    overflow: hidden; /* Fige cette zone */
+    background: transparent; /* Pour voir ton dégradé */
+}
+
+/* 4. Le module de contenu qui DOIT scroller (Règle ton bug n°1) */
+main {
     flex: 1;
-    overflow-y: auto; /* Active la barre de scroll uniquement ici */
+    overflow-y: auto; /* SEULE cette zone défile */
     padding: 20px;
-    height: 100%;
+    background: transparent;
 }
+
+/* 5. Tes Cartes et Modules (TON DESIGN moderne) */
+.card {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(5px); /* Effet verre dépoli */
+    border: none !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
 .scrollable-module {
-    max-height: 400px; /* Taille fixe pour le module */
-    overflow-y: auto;  /* Barre de scroll verticale si le contenu dépasse */
-    border: 1px solid #ddd;
-}
-body {
-/*background:linear-gradient(-50deg, #ccf0b2, #ccf0b2, #ccf0b2, #d0aab5);*/
-background:linear-gradient(-50deg, #640629, #74d1f8, #b2daf0, #a34862);
-background-size: auto;
-animation:gradient 15s ease infinite;
-}
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+    max-height: 400px;
+    overflow-y: auto;
+    border: none !important;
 }
 
-.text-primary {
-    color: red;
-}
-.lead {
-    animation:fadeIn 2s ease-in-out;
-}
-@keyframes fadeIn {
-    from {
-        opacity: 0;transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* 6. Fix pour tes cartes de couleur qui sont devenues blanches */
+.bg-success { background-color: #198754 !important; }
+.bg-danger { background-color: #dc3545 !important; }
+.bg-info { background-color: #0dcaf0 !important; }
 
 .bg-pink {
-    background-color: #d63384 !important; /* Le rose officiel de la palette Bootstrap */
+    background-color: #d63384 !important;
     color: white !important;
 }
 
-#app .custom-navbar {
 
 
-    background-color: green;
- -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-}
-
-
-#app .navbar-brand {
-    color: red
-}
-#app .nav-link {
-    color:green;
-}
-p {
-    color: black;
-}
-h1.display-3.text-primary {
-    color: green;
-}
-p.lead.text-secondary {
-    color: white;
-}
-.medical-icon {
-    color:rgb(153, 11, 11);
-opacity: 0.8;
-font-size: 10rem;
-
-}
-.medical-red{
-    color:#b03a2e ;
-}
-/*dynamysation de l'icone medicale*/
-@keyframes heartBeat {
-    0% { transform: scale(1); }
-    14%{ transform: scale(1); }
-    28% { transform: scale(1); }
-    32% { transform: scale(1); }
-    60% { transform: scale(1); }
-    100% { transform: scale(1); }
-}
 .heartBeat-active {
-    width: 60px;
-    height: 60px;
-    color: #b03a2e;
-    display: inline-block;
-    animation: heartBeat 1s ease-in-out infinite;}
-card-body {
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: inline-block !important;
+    color:#d63c3c !important; /* Rouge pur */
+    font-size: 15rem !important;
+    animation: heartPulse 1.2s ease-in-out infinite !important;
+    filter: drop-shadow(0 0 15px rgba(196, 66, 66, 0.7)) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
+.table thead th {
+    color: #74d1f8 !important; /* Entêtes en bleu clair */
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.table td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Effet au survol des lignes pour mieux voir où on clique */
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* --- FIX SPÉCIFIQUE POUR LA VUE SHOW --- */
+
+/* 1. Rendre la liste d'informations transparente */
+.list-group-item {
+    background-color: transparent !important; /* Enlève le blanc/gris des lignes */
+    color: white !important;               /* Force le texte en blanc */
+    border-color: rgba(255, 255, 255, 0.1) !important; /* Bordure très fine */
+}
+
+/* 2. Enlever le fond gris des sections 'bg-light' */
+.bg-light, .bg-light-danger {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 3. Ajuster les tableaux dans les cartes */
+.table {
+    color: white !important;
+    background-color: transparent !important;
+}
+
+.table thead.table-light {
+    background-color: rgba(255, 255, 255, 0.2) !important; /* En-tête translucide */
+}
+
+.table thead th {
+    background-color: transparent !important;
+    color: #74d1f8 !important; /* Titres de colonnes en bleu clair pour la lisibilité */
+}
+
+/* 4. Forcer le texte des paragraphes et muted en blanc */
+.text-muted, .list-group-item p {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+
+/* ==========================================================
+   FIX LISIBILITÉ MAXIMALE : TABLE CONSULTATIONS (SHOW PATIENT)
+   ========================================================== */
+
+/* 1. Cible le corps de la carte et la table pour forcer le fond blanc opaque */
+#dossier-patient-consultations .card-body,
+#dossier-patient-consultations .table-responsive {
+    background-color: #ffffff !important; /* Blanc pur et totalement opaque */
+    border-radius: 0 0 15px 15px; /* Arrondi seulement en bas */
+    padding: 0; /* Pour que la table colle aux bords */
+}
+
+/* 2. Forcer la table à être opaque et le texte en noir */
+#dossier-patient-consultations .table {
+    background-color: #ffffff !important;
+    color: #000000 !important; /* Texte noir pur pour contraste max */
+    margin-bottom: 0;
+}
+
+/* 3. Forcer les cellules (td) à avoir du texte noir */
+#dossier-patient-consultations .table tbody td {
+    color: #000000 !important;
+    border-color: #e0e0e0 !important; /* Bordures grises claires normales */
+    vertical-align: middle;
+}
+
+/* 4. Fix pour les badges ou petits textes dans la table */
+#dossier-patient-consultations .table tbody td small,
+#dossier-patient-consultations .table tbody td .badge {
+    color: #333333 !important; /* Gris très foncé pour les détails */
+}
