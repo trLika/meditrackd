@@ -59,12 +59,12 @@
     let warningTime = 150000;
     let logoutTime = 180000;
 
-    // 1. Alerte de prévention
+    //  Alerte de prévention
     setTimeout(function() {
         alert("🔒 Sécurité MediTrackD : Votre session va expirer dans 30 secondes par inactivité.");
     }, warningTime);
 
-    // 2. Redirection automatique vers le login à l'échéance
+    // Redirection automatique vers le login à l'échéance
     setTimeout(function() {
         window.location.href = "{{ route('login') }}";
     }, logoutTime);

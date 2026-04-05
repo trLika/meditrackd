@@ -29,7 +29,8 @@ body, html {
     border: 1px solid #ddd;
 }
 body {
-    background:linear-gradient(-50deg, #ccf0b2, #ccf0b2, #ccf0b2, #d0aab5);
+/*background:linear-gradient(-50deg, #ccf0b2, #ccf0b2, #ccf0b2, #d0aab5);*/
+background:linear-gradient(-50deg, #640629, #74d1f8, #b2daf0, #a34862);
 background-size: auto;
 animation:gradient 15s ease infinite;
 }

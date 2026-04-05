@@ -15,8 +15,13 @@
  @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid py-3" style="height: 100vh; display: flex; flex-direction: column;">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+<div class="container-fluid py-3" style="min-height: 100vh;
+display: flex; flex-direction: column;">
+<div class="container-fluid py-3" style="height: 100vh;
+ overflow: hidden; display: flex; flex-direction: column;">
+
+
+<div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="fw-bold text-success m-0">Liste des Patients</h2>
 
             <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill shadow-sm">

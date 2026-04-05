@@ -73,6 +73,7 @@
     </div>
 </div>
 </div>
+
 <style>
     .card.position-relative {
         transition: transform 0.2s, box-shadow 0.2s;
@@ -87,7 +88,8 @@
         <div class="col-md-6 mb-4">
          <div class="card shadow border-0 h-100">
     <div class="card-header bg-dark fw-bold d-flex justify-content-between align-items-center text-white">
-        <h5 class="mb-0">
+
+    <h5 class="mb-0">
             <i class="bi bi-people me-2 text-danger"></i> Les derniers patients enregistrés
         </h5>
         <span class="badge bg-danger rounded-pill">{{ $totalPatients }} au total</span>
@@ -149,18 +151,20 @@
 </div>
 <!--niveau de tracabilite sur le dashboard-->
 @if(auth()->user()->role === 'admin')
-<div class="row mt-4">
-    <div class="col-12">
-        <div class="card shadow border-0">
-            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i> Activités Récentes</h5>
+<div class="row mt-2">
+    <div class="col-12 ">
+        <div class="card shadow border-0 ">
+            <div class="card-header bg-dark text-white d-flex
+            justify-content-between align-items-center">
+
+            <h5 class="mb-0"><i class="bi bi-list-ul me-2"></i> Activités Récentes</h5>
                  <span class="badge bg-danger text-white">{{ $recentLogs->count() }} logs affichés</span>
             </div>
 
 <!--Affichage du barre scrollante-->
             <div class="card-body bg-secondary scrollable-module">
                 <table class="table table-hover align-middle">
-                    <thead class="table-light" style="position: sticky; top: 0; z-index: index: 1;">
+                    <thead class="table-dark" style="position: sticky; top: 0; z-index: index: 1;">
                         <tr>
                             <th>Utilisateur</th>
                             <th>Action</th>
