@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class ="text-dark text-uppercase fw-bold">Tableau de Bord</h2>
-        <span class="badge bg-light text-dark shadow-sm p-2">{{ now()->format('d/m/Y H:i') }}</span>
+        <span class="badge bg-pink shadow-sm p-2">{{ now()->format('d/m/Y H:i') }}</span>
     </div>
 
     <!--Affichage des statistiques-->
@@ -19,7 +19,7 @@
                             <h6 class="text-uppercase opacity-75">Le total de patients enregistrés</h6>
                             <h1 class="display-5 fw-bold">{{ $totalPatients }}</h1>
                         </div>
-                        <i class="bi bi-people fs-1 opacity-50"></i>
+                        <i class="bi bi-people fs-1 opacity-50 text-dark"></i>
                     </div>
                     <a href="{{ route('patients.index') }}" class="stretched-link"></a>
                 </div>
@@ -34,7 +34,7 @@
                             <h6 class="text-uppercase opacity-75" >Les cas critiques</h6>
                             <h1 class="display-5 fw-bold">{{ $criticalCases }}</h1>
                         </div>
-                        <i class="bi bi-exclamation-triangle-fill fs-1 opacity-50"></i>
+                        <i class="bi bi-exclamation-triangle-fill fs-1 opacity-50 text-warning"></i>
                     </div>
                     <a href="{{ route('patients.index', ['critique' => 1]) }}" class="stretched-link"></a>
                 </div>
@@ -49,7 +49,7 @@
                             <h6 class="text-uppercase opacity-75">Consultations effectuées / Jour</h6>
                             <h1 class="display-5 fw-bold">{{ $consultationsToday }}</h1>
                         </div>
-                        <i class="bi bi-calendar-check fs-1 opacity-50"></i>
+                        <i class="bi bi-calendar-check fs-1 opacity-50 text-primary center"></i>
                     </div>
                     <a href="{{ route('patients.index', ['filter' => 'today']) }}" class="stretched-link"></a>
                 </div>
@@ -63,11 +63,14 @@
         <div class="col-lg-5">
             <div class="card shadow border-0 h-100">
                 <div class="card-header bg-danger fw-bold border-0 pt-3 text-white d-flex align-items-center">
-                    <i class="bi bi-pie-chart-fill me-2 text-white"></i> Répartition par groupes sanguins
+                    <i class="bi bi-pie-chart-fill me-2 text-secondary"></i> Répartition par groupes sanguins
                 </div>
                 <div class="card-body d-flex justify-content-center align-items-center">
                     <div style="height: 300px; width: 100%;">
-                        <canvas id="bloodChart"></canvas><!-- Graphique Chart.js  -->
+                       <canvas id="bloodChart"
+    data-labels='{!! json_encode($groupesSanguins->pluck("groupe_sanguin")) !!}'
+    data-values='{!! json_encode($groupesSanguins->pluck("total")) !!}'>
+</canvas>
                     </div>
                 </div>
             </div>
@@ -77,7 +80,7 @@
         <div class="col-lg-7">
             <div class="card shadow border-0 h-100">
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
-                    <h5 class="mb-0"><i class="bi bi-people me-2"></i> Derniers patients enregistrés</h5>
+                    <h5 class="mb-0"><i class="bi bi-people me-2 text-dark"></i> Derniers patients enregistrés</h5>
                     <span class="badge bg-danger rounded-pill">{{ $totalPatients }} patients</span>
                 </div>
                 <div class="card-body p-0" style="max-height: 350px; overflow-y: auto;">
@@ -153,44 +156,7 @@
     @endif
 </div>
 
-<!-- STYLES INTERNE -->
-<style>
-    .stat-card { transition: all 0.3s ease; border: none; }
-    .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15) ; }
-    .bg-pink { background-color: #f8bbd0; }
-    .sticky-top { z-index: 10; background-color: white; }
-</style>
 
-<!-- JS INTERNE -->
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Graphique Sanguin
-    const ctx = document.getElementById('bloodChart');
-    if(ctx) {
-        new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: {!! json_encode($groupesSanguins->pluck('groupe_sanguin')) !!},
-                datasets: [{
-                    data: {!! json_encode($groupesSanguins->pluck('total')) !!},
-                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#4caf50', '#ff9800', '#795548']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { position: 'bottom' } }
-            }
-        });
-    }
 
-    // Rendre les lignes du tableau cliquables
-    const rows = document.querySelectorAll(".clickable-row");
-    rows.forEach(row => {
-        row.addEventListener("click", function() {
-            window.location.href = this.dataset.href;
-        });
-    });
-});
-</script>
+
 @endsection

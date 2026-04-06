@@ -152,47 +152,5 @@
     </div>
 </div>
 
-<style>
-    /* DESIGN BLOC TYPE DASHBOARD */
-    .card-dashboard-style {
-        background: rgba(15, 23, 42, 0.85) ;
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1) ;
-        border-radius: 15px;
-        overflow: hidden;
-    }
 
-    .bg-header-dark {
-        background: rgba(0, 0, 0, 0.4) ;
-        padding: 15px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) ;
-    }
-
-    .info-row {
-        padding-bottom: 12px;
-        margin-bottom: 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .border-white-10 { border-color: rgba(255, 255, 255, 0.1) ; }
-
-    /* TABLEAUX LISIBLES */
-    .table-custom { color: white ; }
-    .table-custom thead th {
-        background: rgba(255, 255, 255, 0.03) ;
-        color: #0dcaf0 ;
-        font-size: 0.7rem;
-        letter-spacing: 1px;
-        padding: 12px 20px;
-        border: none;
-    }
-    .table-custom tbody tr td {
-        padding: 12px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-    }
-    .table-custom tbody tr:hover {
-        background: rgba(255, 255, 255, 0.05) ;
-    }
-</style>
 @endsection

@@ -6,7 +6,7 @@
         <div class="col-md-4">
             <div class="card shadow border-0">
                 <div class="card-header bg-success text-white text-center fw-bold">
-                    CONNEXION - MEDITRACKD
+                    Connexion requise pour accéder à MediTrackD
                 </div>
                 <div class="card-body p-4">
                     <form action="{{ route('login') }}" method="POST">

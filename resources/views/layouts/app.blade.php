@@ -17,11 +17,12 @@
                         <h4 class="text-danger fw-bold mb-4">MediTrackD</h4>
                         <ul class="nav nav-pills flex-column">
                             <li class="nav-item mb-2">
-                                <a href="/" class="nav-link text-white"><i class="bi bi-house-door me-2"></i> Accueil</a>
+                                <a href="/" class="nav-link text-white">
+                                    <i class="bi bi-house-door me-2 text-primary"></i> Accueil</a>
                             </li>
                             <li class="nav-item mb-2">
                                 <a href="{{ route('dashboard') }}" class="nav-link text-white {{ request()->is('dashboard') ? 'active' : '' }}">
-                                    <i class="bi bi-speedometer2 me-2"></i> Tableau de bord
+                                    <i class="bi bi-speedometer2 me-2 text-danger"></i> Tableau de bord
                                 </a>
                             </li>
                             <li class="nav-item mb-2">
@@ -38,9 +39,19 @@
     <header class="navbar navbar-expand-md navbar-light bg-transparent py-3 px-4 mb-3">
         <div class="container-fluid">
             <div class="ms-auto dropdown">
-                <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-circle me-1 text-danger"></i> Admin MediTrack
+                <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle me-1 text-danger"></i> {{ Auth::user()->name }}
                 </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+        <li>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="dropdown-item text-danger">
+                    <i class="bi bi-box-arrow-right me-2 "></i> Déconnexion
+                </button>
+            </form>
+        </li>
+    </ul>
                 </div>
         </div>
     </header>
@@ -55,4 +66,6 @@
         @endif
     </div>
 </body>
+
 </html>
+
