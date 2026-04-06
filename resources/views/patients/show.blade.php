@@ -7,8 +7,8 @@
             <i class="bi bi-person-bounding-box me-2 text-info"></i>Dossier Patient
         </h2>
         <div class="d-flex gap-2">
-            <a href="{{ route('patients.index') }}" class="btn btn-outline-light px-3 shadow-sm">
-                <i class="bi bi-arrow-left "></i> Retour
+            <a href="{{ route('patients.index') }}" class="btn btn-outline-danger px-3 shadow-sm">
+                <i class="bi bi-arrow-left  "></i> Retour
             </a>
             @if(auth()->user()->role !== 'stagiaire')
                 <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary px-3 shadow-sm text-white">
@@ -22,7 +22,7 @@
         <div class="col-lg-4">
             <div class="card card-dashboard-style h-100">
                 <div class="card-header border-0 bg-header-dark">
-                    <h5 class="mb-0 text-info fw-bold small text-uppercase"><i class="bi bi-fingerprint me-2"></i>Identité</h5>
+                    <h5 class="mb-0 text-info fw-bold small text-uppercase"><i class="bi bi-fingerprint me-2"></i>Identité du Patient</h5>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center mb-4">
@@ -98,7 +98,7 @@
                                     <tr>
                                         <td class="text-dark fw-bold">{{ \Carbon\Carbon::parse($c->date_consultation)->format('d/m/Y') }}</td>
                                         <td class="text-dark small">{{ Str::limit($c->diagnostic, 40) }}</td>
-                                        <td class="text-dark small">{{ $c->tension ?? '-' }}
+                                        <td class="text-dark small">{{ $c->tension ?? '-' }}__
                                             {{ $c->poids ?? '-' }}kg</td>
                                     </tr>
                                     @endforeach
@@ -155,18 +155,18 @@
 <style>
     /* DESIGN BLOC TYPE DASHBOARD */
     .card-dashboard-style {
-        background: rgba(15, 23, 42, 0.85) !important; /* Même opacité sombre que tes blocs dashboard */
+        background: rgba(15, 23, 42, 0.85) ;
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) ;
         border-radius: 15px;
         overflow: hidden;
     }
 
     .bg-header-dark {
-        background: rgba(0, 0, 0, 0.4) !important;
+        background: rgba(0, 0, 0, 0.4) ;
         padding: 15px 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) ;
     }
 
     .info-row {
@@ -175,13 +175,13 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .border-white-10 { border-color: rgba(255, 255, 255, 0.1) !important; }
+    .border-white-10 { border-color: rgba(255, 255, 255, 0.1) ; }
 
     /* TABLEAUX LISIBLES */
-    .table-custom { color: white !important; }
+    .table-custom { color: white ; }
     .table-custom thead th {
-        background: rgba(255, 255, 255, 0.03) !important;
-        color: #0dcaf0 !important;
+        background: rgba(255, 255, 255, 0.03) ;
+        color: #0dcaf0 ;
         font-size: 0.7rem;
         letter-spacing: 1px;
         padding: 12px 20px;
@@ -192,7 +192,7 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
     .table-custom tbody tr:hover {
-        background: rgba(255, 255, 255, 0.05) !important;
+        background: rgba(255, 255, 255, 0.05) ;
     }
 </style>
 @endsection

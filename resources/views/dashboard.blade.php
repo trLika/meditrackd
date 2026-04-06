@@ -9,14 +9,14 @@
         <span class="badge bg-light text-dark shadow-sm p-2">{{ now()->format('d/m/Y H:i') }}</span>
     </div>
 
-    {{-- 1. LES 3 CARTES SUPÉRIEURES (STATISTIQUES) --}}
+    <!--Affichage des statistiques-->
     <div class="row g-4 mb-4">
         <div class="col-md-4">
             <div class="card bg-success text-white shadow h-100 stat-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="text-uppercase opacity-75">Total Patients</h6>
+                            <h6 class="text-uppercase opacity-75">Le total de patients enregistrés</h6>
                             <h1 class="display-5 fw-bold">{{ $totalPatients }}</h1>
                         </div>
                         <i class="bi bi-people fs-1 opacity-50"></i>
@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="text-uppercase opacity-75">Cas Critiques</h6>
+                            <h6 class="text-uppercase opacity-75" >Les cas critiques</h6>
                             <h1 class="display-5 fw-bold">{{ $criticalCases }}</h1>
                         </div>
                         <i class="bi bi-exclamation-triangle-fill fs-1 opacity-50"></i>
@@ -46,7 +46,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="text-uppercase opacity-75">Consultations / Jour</h6>
+                            <h6 class="text-uppercase opacity-75">Consultations effectuées / Jour</h6>
                             <h1 class="display-5 fw-bold">{{ $consultationsToday }}</h1>
                         </div>
                         <i class="bi bi-calendar-check fs-1 opacity-50"></i>
@@ -57,27 +57,27 @@
         </div>
     </div>
 
-    {{-- 2. SECTION MILIEU : GRAPHIQUE ET DERNIERS PATIENTS --}}
+
     <div class="row g-4 mb-4">
-        {{-- Graphique --}}
+
         <div class="col-lg-5">
             <div class="card shadow border-0 h-100">
-                <div class="card-header bg-white fw-bold border-0 pt-3">
-                    <i class="bi bi-pie-chart-fill me-2 text-danger"></i> Répartition Groupes Sanguins
+                <div class="card-header bg-danger fw-bold border-0 pt-3 text-white d-flex align-items-center">
+                    <i class="bi bi-pie-chart-fill me-2 text-white"></i> Répartition par groupes sanguins
                 </div>
                 <div class="card-body d-flex justify-content-center align-items-center">
                     <div style="height: 300px; width: 100%;">
-                        <canvas id="bloodChart"></canvas>
+                        <canvas id="bloodChart"></canvas><!-- Graphique Chart.js  -->
                     </div>
                 </div>
             </div>
         </div>
 
-        {{-- Derniers Patients --}}
+
         <div class="col-lg-7">
             <div class="card shadow border-0 h-100">
-                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
-                    <h5 class="mb-0"><i class="bi bi-people me-2"></i> Derniers Patients</h5>
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
+                    <h5 class="mb-0"><i class="bi bi-people me-2"></i> Derniers patients enregistrés</h5>
                     <span class="badge bg-danger rounded-pill">{{ $totalPatients }} patients</span>
                 </div>
                 <div class="card-body p-0" style="max-height: 350px; overflow-y: auto;">
@@ -112,7 +112,7 @@
         </div>
     </div>
 
-    {{-- 3. SECTION BAS : ACTIVITÉS RÉCENTES (ADMIN SEULEMENT) --}}
+    <!--Affichage des logs récents pour les admins-->
     @if(auth()->user()->role === 'admin')
     <div class="row g-4">
         <div class="col-12">
@@ -135,7 +135,7 @@
                             @forelse($recentLogs as $log)
                             <tr>
                                 <td class="fw-bold">{{ $log->user->name ?? 'Système' }}</td>
-                                <td><span class="badge bg-light text-dark border">{{ $log->action }}</span></td>
+                                <td><span class="badge bg-info text-dark border">{{ $log->action }}</span></td>
                                 <td>{{ $log->patient_name }}</td>
                                 <td class="text-muted small">{{ $log->created_at->diffForHumans() }}</td>
                             </tr>
@@ -153,15 +153,15 @@
     @endif
 </div>
 
-{{-- CSS INTERNE --}}
+<!-- STYLES INTERNE -->
 <style>
     .stat-card { transition: all 0.3s ease; border: none; }
-    .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important; }
+    .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15) ; }
     .bg-pink { background-color: #f8bbd0; }
     .sticky-top { z-index: 10; background-color: white; }
 </style>
 
-{{-- SCRIPTS --}}
+<!-- JS INTERNE -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Graphique Sanguin

@@ -3,14 +3,14 @@
 @section('content')
 <div class="container mt-4">
     <div class="card shadow-sm border-0">
-        <div class="card-header bg-white">
-            <h4 class="mb-0 fw-bold text-success">Ajouter un nouveau patient</h4>
+        <div class="card-header bg-success  d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 fw-bold text-white">Formulaire d'ajout de patient</h4>
         </div>
         <div class="card-body">
             <form action="{{ route('patients.store') }}" method="POST">
-                @csrf <div class="row mb-3">
+                @csrf <div class="row mb-3"><!--csref fonction de validation des champs-->
                     <div class="col-md-6">
-                        <label class="form-label">Nom</label>
+                        <label class="form-label fw-bold">Nom</label>
 
                         <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom') }}" placeholder="Ex: DIALLO" required>
 
@@ -21,7 +21,7 @@
 @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Prénom</label>
+                        <label class="form-label fw-bold">Prénom</label>
                         <input type="text" name="prenom" class="form-control" placeholder="Ex: Aissatou" required>
                     </div>
  <div class="mb-3">
@@ -50,7 +50,7 @@
                 <div class="row mb-3">
                     <div class="col-md-6">
                        <div class="col-md-6">
-    <label class="form-label">Téléphone</label>
+    <label class="form-label fw-bold">Téléphone</label>
     <input type="text" name="telephone"
            class="form-control @error('telephone') is-invalid @enderror"
            value="{{ old('telephone') }}"
@@ -63,7 +63,7 @@
     @enderror
 </div>
                     <div class="col-md-6">
-                        <label class="form-label">Groupe Sanguin</label>
+                        <label class="form-label fw-bold">Groupe Sanguin</label>
                         <select name="groupe_sanguin" class="form-select" required>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -78,12 +78,12 @@
                     </div>
                 </div>
              <div class="mb-3">
-    <label for="antecedents" class="form-label">Antécédents Médicaux</label>
+    <label for="antecedents" class="form-label fw-bold">Antécédents Médicaux</label>
     <textarea name="antecedents" id="antecedents" class="form-control" rows="3" placeholder="Ex: Asthme, Diabète, Allergies..."></textarea>
 </div>
 
 <div class="mb-3">
-    <label>Allergies connues</label>
+    <label class="form-label fw-bold">Allergies connues</label>
     <textarea name="allergies" class="form-control"
      placeholder="Ex: Pénicilline, Arachides..."></textarea>
 </div>

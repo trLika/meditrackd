@@ -63,6 +63,7 @@
                             <label class="form-label fw-bold">Adresse</label>
                             <textarea name="adresse" class="form-control" rows="3">{{ old('adresse', $patient->adresse) }}</textarea>
                         </div>
+                        
                          <div class="mb-3">
     <label for="antecedents" class="form-label">Antécédents Médicaux</label>
     <textarea name="antecedents" id="antecedents" class="form-control" rows="3">{{ old('antecedents', $patient->antecedents) }}</textarea>

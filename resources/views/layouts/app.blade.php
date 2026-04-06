@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediTrackD</title>
+    <title>MediTrackD-votre outil de gestion médicale </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -26,7 +26,7 @@
                             </li>
                             <li class="nav-item mb-2">
                                 <a href="{{ route('patients.index') }}" class="nav-link text-white {{ request()->is('patients*') ? 'active' : '' }}">
-                                    <i class="bi bi-people me-2"></i> Patients
+                                    <i class="bi bi-people me-2 text-success"></i> Patients
                                 </a>
                             </li>
                         </ul>
@@ -38,8 +38,8 @@
     <header class="navbar navbar-expand-md navbar-light bg-transparent py-3 px-4 mb-3">
         <div class="container-fluid">
             <div class="ms-auto dropdown">
-                <a class="nav-link dropdown-toggle fw-bold text-white" href="#" role="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-circle me-1"></i> Admin MediTrack
+                <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-1 text-danger"></i> Admin MediTrack
                 </a>
                 </div>
         </div>
