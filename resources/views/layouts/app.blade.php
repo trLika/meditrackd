@@ -6,6 +6,14 @@
     <title>MediTrackD-votre outil de gestion médicale </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        body {
+            background-color: #e3f2fd;
+        }
+        .flex-grow-1 {
+            background-color: #e3f2fd;
+        }
+    </style>
 </head>
 <body>
 
@@ -34,37 +42,40 @@
                     </div>
                 </nav>
 
-<div class="flex-grow-1" style="margin-left: 260px; min-height: 100vh; background: transparent;">
+                <div class="flex-grow-1" style="margin-left: 260px; min-height: 100vh; background: transparent; overflow-y: scroll !important;">
 
-    <header class="navbar navbar-expand-md navbar-light bg-transparent py-3 px-4 mb-3">
-        <div class="container-fluid">
-            <div class="ms-auto dropdown">
-                <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle me-1 text-danger"></i> {{ Auth::user()->name }}
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-        <li>
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="dropdown-item text-danger">
-                    <i class="bi bi-box-arrow-right me-2 "></i> Déconnexion
-                </button>
-            </form>
-        </li>
-    </ul>
+                    <header class="navbar navbar-expand-md navbar-light bg-transparent py-3 px-4 mb-3">
+                        <div class="container-fluid">
+                            <div class="ms-auto dropdown">
+                                <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle me-1 text-danger"></i> {{ Auth::user()->name }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="bi bi-box-arrow-right me-2 "></i> Déconnexion
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main class="px-4">
+                        @yield('content')
+                    </main>
                 </div>
-        </div>
-    </header>
 
-    <main class="px-4">
-        @yield('content')
-    </main>
-</div>
-
+            </div>
         @else
             <div class="min-vh-100">@yield('content')</div>
         @endif
     </div>
+
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>

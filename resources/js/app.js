@@ -1,4 +1,5 @@
 import './bootstrap';
+import './validation';
 
 document.addEventListener("DOMContentLoaded", function() {
 

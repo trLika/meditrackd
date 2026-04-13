@@ -38,7 +38,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Traitement </label>
+                            <label class="form-label fw-bold">Traitement</label>
                             <textarea name="traitement" class="form-control" rows="3" required placeholder="Médicaments prescrits..."></textarea>
                         </div>
 
@@ -52,4 +52,5 @@
         </div>
     </div>
 </div>
+
 @endsection

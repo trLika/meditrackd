@@ -50,24 +50,55 @@ public function create()
 
 public function store(Request $request)
 {
-    $validated = $request->validate([
-        'nom' => 'required|string|max:255',
-        'prenom' => 'required|string|max:255',
-        'sexe' => 'required',
-        'date_naissance'=>'required|date',
-        'telephone' => 'nullable',
-        'adresse' => 'nullable',
-        'groupe_sanguin' => 'nullable',
-        'antecedents' => 'nullable',
-        'is_critique' => 'boolean'
-    ]);
+    // Débogage : Afficher les données reçues
+    \Log::info('Données patient reçues:', $request->all());
+    
+    // Nettoyer le numéro de téléphone avant validation
+    $telephone = $request->telephone;
+    $telephone = preg_replace('/[\s\-\(\)]/', '', $telephone); // Retirer espaces, tirets, parenthèses
+    $telephone = preg_replace('/^\+223/', '', $telephone); // Retirer le préfixe +223
+    $request->merge(['telephone' => $telephone]);
 
+    $validated = $request->validate([
+        'nom' => 'required|string|max:255|regex:/^[a-zA-Z\s\-\']+$/',
+        'prenom' => 'required|string|max:255|regex:/^[a-zA-Z\s\-\']+$/',
+        'sexe' => 'required|in:M,F',
+        'date_naissance' => 'required|date|before:today|after:1900-01-01',
+        'telephone' => 'required|string|regex:/^[67][0-9]{7}$/',
+        'adresse' => 'nullable|string|max:500',
+        'groupe_sanguin' => 'nullable|in:A+,A-,B+,B-,O+,O-,AB+,AB-',
+        'antecedents' => 'nullable|string|max:1000',
+        'allergies' => 'nullable|string|max:500',
+        'is_critique' => 'boolean'
+    ], [
+        'nom.required' => 'Le nom est obligatoire',
+        'nom.regex' => 'Le nom ne doit contenir que des lettres, espaces, tirets et apostrophes',
+        'prenom.required' => 'Le prénom est obligatoire',
+        'prenom.regex' => 'Le prénom ne doit contenir que des lettres, espaces, tirets et apostrophes',
+        'sexe.required' => 'Le sexe est obligatoire',
+        'sexe.in' => 'Veuillez choisir un sexe valide',
+        'date_naissance.required' => 'La date de naissance est obligatoire',
+        'date_naissance.before' => 'La date de naissance doit être antérieure à aujourd\'hui',
+        'date_naissance.after' => 'La date de naissance semble invalide',
+        'telephone.required' => 'Le téléphone est obligatoire',
+        'telephone.regex' => 'Format invalide. Le numéro doit commencer par 6 ou 7 et contenir 8 chiffres',
+        'adresse.max' => 'L\'adresse ne doit pas dépasser 500 caractères',
+        'groupe_sanguin.in' => 'Veuillez choisir un groupe sanguin valide',
+        'antecedents.max' => 'Les antécédents ne doivent pas dépasser 1000 caractères',
+        'allergies.max' => 'Les allergies ne doivent pas dépasser 500 caractères'
+    ]);
 
     $validated['is_critique'] = $request->has('is_critique');
 
-    Patient::create($validated);
+    // Débogage : Afficher les données validées avant création
+    \Log::info('Données patient validées:', $validated);
 
-    return redirect()->route('patients.index')->with('success', 'Patient ajouté !');
+    $patient = Patient::create($validated);
+
+    // Débogage : Vérifier si le patient a été créé
+    \Log::info('Patient créé avec ID:', ['id' => $patient->id, 'nom' => $patient->nom]);
+
+    return redirect()->route('patients.index')->with('success', 'Patient ajouté avec succès !');
 }
 
 public function edit($id)
@@ -113,29 +144,50 @@ public function update(Request $request, Patient $patient)
     if (auth()->user()->role === 'stagiaire') {
         abort(403, 'Action non autorisée.');
     }
+    
+    // Nettoyer le numéro de téléphone avant validation
+    $telephone = $request->telephone;
+    $telephone = preg_replace('/[\s\-\(\)]/', '', $telephone); // Retirer espaces, tirets, parenthèses
+    $telephone = preg_replace('/^\+223/', '', $telephone); // Retirer le préfixe +223
+    $request->merge(['telephone' => $telephone]);
+    
     $validated = $request->validate([
-        'nom' => 'required',
-        'prenom' => 'required',
-        'sexe' => 'required',
-        'telephone' => 'nullable',
-        'adresse' => 'nullable',
-        'groupe_sanguin' => 'nullable',
-        'antecedents' => 'nullable',
-        'allergies' => 'nullable|string', 
+        'nom' => 'required|string|max:255|regex:/^[a-zA-Z\s\-\']+$/',
+        'prenom' => 'required|string|max:255|regex:/^[a-zA-Z\s\-\']+$/',
+        'sexe' => 'required|in:M,F',
+        'date_naissance' => 'required|date|before:today|after:1900-01-01',
+        'telephone' => 'required|string|regex:/^[67][0-9]{7}$/',
+        'adresse' => 'nullable|string|max:500',
+        'groupe_sanguin' => 'nullable|in:A+,A-,B+,B-,O+,O-,AB+,AB-',
+        'antecedents' => 'nullable|string|max:1000',
+        'allergies' => 'nullable|string|max:500',
+    ], [
+        'nom.required' => 'Le nom est obligatoire',
+        'nom.regex' => 'Le nom ne doit contenir que des lettres, espaces, tirets et apostrophes',
+        'prenom.required' => 'Le prénom est obligatoire',
+        'prenom.regex' => 'Le prénom ne doit contenir que des lettres, espaces, tirets et apostrophes',
+        'sexe.required' => 'Le sexe est obligatoire',
+        'sexe.in' => 'Veuillez choisir un sexe valide',
+        'date_naissance.required' => 'La date de naissance est obligatoire',
+        'date_naissance.before' => 'La date de naissance doit être antérieure à aujourd\'hui',
+        'date_naissance.after' => 'La date de naissance semble invalide',
+        'telephone.required' => 'Le téléphone est obligatoire',
+        'telephone.regex' => 'Format invalide. Le numéro doit commencer par 6 ou 7 et contenir 8 chiffres',
+        'adresse.max' => 'L\'adresse ne doit pas dépasser 500 caractères',
+        'groupe_sanguin.in' => 'Veuillez choisir un groupe sanguin valide',
+        'antecedents.max' => 'Les antécédents ne doivent pas dépasser 1000 caractères',
+        'allergies.max' => 'Les allergies ne doivent pas dépasser 500 caractères'
     ]);
 
-    // Gestion spécifique de la checkbox (si décochée, elle n'est pas envoyée par le navigateur)
     $validated['is_critique'] = $request->has('is_critique');
 
     $patient->update($validated);
 
-    //restriction de la tracabilite
-    // Enregistrement de l'activité pour la traçabilité
-\App\Models\ActivityLog::create([
-    'user_id' => auth()->id(),
-    'action' => 'Mise à jour dossier',
-    'patient_name' => $patient->nom . ' ' . $patient->prenom,
-]);
+    \App\Models\ActivityLog::create([
+        'user_id' => auth()->id(),
+        'action' => 'Mise à jour dossier',
+        'patient_name' => $patient->nom . ' ' . $patient->prenom,
+    ]);
 
     return redirect()->route('patients.index')->with('success', 'Dossier patient mis à jour avec succès !');
 }

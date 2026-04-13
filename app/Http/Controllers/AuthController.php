@@ -21,7 +21,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard'); // Redirige vers la liste des patients
+            
+            // Rediriger vers la page prévue ou vers le dashboard par défaut
+            $redirectUrl = session('url.intended', route('dashboard'));
+            return redirect($redirectUrl);
         }
 
         return back()->withErrors([

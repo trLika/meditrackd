@@ -18,7 +18,9 @@ class Consultation extends Model
         'diagnostic',
         'traitement',
         'poids',
-        'tension'
+        'tension',
+        'created_at',
+        'updated_at'
     ];
 
     public function patient()

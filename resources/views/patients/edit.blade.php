@@ -9,9 +9,22 @@
                     <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Modifier les données du Patient : {{ $patient->nom }} {{ $patient->prenom }}</h5>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('patients.update', $patient->id) }}" method="POST">
+                    <form action="{{ route('patients.update', $patient->id) }}" method="POST" autocomplete="off">
                         @csrf
-                        @method('PUT') <div class="row">
+                        @method('PUT')
+                        
+                        <!-- Affichage des erreurs de validation -->
+                        @if ($errors->any())
+                            <div class="alert alert-danger mb-3">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        
+                        <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Nom</label>
                                 <input type="text" name="nom" class="form-control @error('nom') is-invalid @enderror" value="{{ old('nom', $patient->nom) }}" required>
@@ -99,4 +112,36 @@
         </div>
     </div>
 </div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    const nom = document.querySelector('input[name="nom"]').value.trim();
+    const prenom = document.querySelector('input[name="prenom"]').value.trim();
+    const telephone = document.querySelector('input[name="telephone"]').value.trim();
+    
+    if (nom.length < 2) {
+        e.preventDefault();
+        alert('Le nom doit contenir au moins 2 caractères');
+        document.querySelector('input[name="nom"]').focus();
+        return false;
+    }
+    
+    if (prenom.length < 2) {
+        e.preventDefault();
+        alert('Le prénom doit contenir au moins 2 caractères');
+        document.querySelector('input[name="prenom"]').focus();
+        return false;
+    }
+    
+    if (telephone.length < 8) {
+        e.preventDefault();
+        alert('Le téléphone doit contenir au moins 8 chiffres');
+        document.querySelector('input[name="telephone"]').focus();
+        return false;
+    }
+    
+    return true;
+});
+</script>
+
 @endsection
