@@ -52,7 +52,7 @@ public function store(Request $request)
 {
     // Débogage : Afficher les données reçues
     \Log::info('Données patient reçues:', $request->all());
-    
+
     // Nettoyer le numéro de téléphone avant validation
     $telephone = $request->telephone;
     $telephone = preg_replace('/[\s\-\(\)]/', '', $telephone); // Retirer espaces, tirets, parenthèses
@@ -144,13 +144,13 @@ public function update(Request $request, Patient $patient)
     if (auth()->user()->role === 'stagiaire') {
         abort(403, 'Action non autorisée.');
     }
-    
+
     // Nettoyer le numéro de téléphone avant validation
     $telephone = $request->telephone;
     $telephone = preg_replace('/[\s\-\(\)]/', '', $telephone); // Retirer espaces, tirets, parenthèses
     $telephone = preg_replace('/^\+223/', '', $telephone); // Retirer le préfixe +223
     $request->merge(['telephone' => $telephone]);
-    
+
     $validated = $request->validate([
         'nom' => 'required|string|max:255|regex:/^[a-zA-Z\s\-\']+$/',
         'prenom' => 'required|string|max:255|regex:/^[a-zA-Z\s\-\']+$/',

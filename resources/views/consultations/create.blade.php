@@ -1,56 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow border-0">
-                <div class="card-header bg-info text-white p-3">
-                    <h4 class="mb-0">Fiche de Consultation : {{ $patient->nom }} {{ $patient->prenom }}</h4>
+<div class="container mt-4">
+    <div class="card shadow border-0 rounded-4">
+        <div class="card-header bg-gradient-info text-dark p-3 rounded-top-4">
+            <h4 class="mb-0">
+                <i class="bi bi-clipboard2-pulse me-2 text-info"></i>
+                Fiche de Consultation : <strong>{{ $patient->nom }} {{ $patient->prenom }}</strong>
+            </h4>
+        </div>
+
+        <div class="card-body p-4">
+            @if ($errors->any())
+                <div class="alert alert-danger mb-4">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
-                <div class="card-body p-4">
-                    <form action="{{ route('consultations.store', $patient->id) }}" method="POST">
-                        @csrf
+            @endif
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-bold">Date de consultation</label>
-                                <input type="date" name="date_consultation" class="form-control" value="{{ date('Y-m-d') }}" required>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label fw-bold">Poids (kg)</label>
-                                <input type="number" step="0.1" name="poids" class="form-control" placeholder="70.5">
-                            </div>
-                            <div class="col-md-3">
-                                <label class="form-label fw-bold">Tension</label>
-                                <input type="text" name="tension" class="form-control" placeholder="12/8">
-                            </div>
-                        </div>
+            <form action="{{ route('consultations.store', $patient->id) }}" method="POST">
+                @csrf
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Symptômes</label>
-                            <textarea name="symptomes" class="form-control" rows="2" placeholder="Ex: Fièvre, toux..."></textarea>
-                        </div>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Date de consultation</label>
+                        <input type="date" name="date_consultation" class="form-control"
+                               value="{{ old('date_consultation', date('Y-m-d')) }}" required>
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Diagnostic</label>
-                            <textarea name="diagnostic" class="form-control" rows="3" required placeholder="Observations médicales..."></textarea>
-                        </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Poids (kg)</label>
+                        <input type="number" step="0.1" name="poids" class="form-control"
+                               value="{{ old('poids') }}" placeholder="Ex: 75.5">
+                    </div>
 
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Traitement</label>
-                            <textarea name="traitement" class="form-control" rows="3" required placeholder="Médicaments prescrits..."></textarea>
-                        </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Tension Artérielle</label>
+                        <input type="text" name="tension" class="form-control"
+                               value="{{ old('tension') }}" placeholder="Ex: 12/8">
+                    </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-info btn-lg">Enregistrer la consultation</button>
-                            <a href="{{ route('patients.index') }}" class="btn btn-danger text-muted">Annuler la consultation</a>
-                        </div>
-                    </form>
+                    <div class="col-12">
+                        <label class="form-label fw-bold">Symptômes / Motifs</label>
+                        <textarea name="symptomes" class="form-control" rows="3">{{ old('symptomes') }}</textarea>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-primary">Diagnostic</label>
+                        <textarea name="diagnostic" class="form-control" rows="3" required>{{ old('diagnostic') }}</textarea>
+                        <div class="form-text">Minimum 10 caractères.</div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label fw-bold text-success">Traitement / Ordonnance</label>
+                        <textarea name="traitement" class="form-control" rows="4" required>{{ old('traitement') }}</textarea>
+                        <div class="form-text">Minimum 10 caractères.</div>
+                    </div>
                 </div>
-            </div>
+
+                <div class="d-flex justify-content-between mt-5">
+                   <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-outline-secondary px-4">
+                        <i class="bi bi-arrow-left"></i> Retour
+                    </a>
+                    <button type="submit" class="btn btn-primary px-5 fw-bold">
+                        <i class="bi bi-check-circle me-2"></i> Enregistrer la Consultation
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
 @endsection
