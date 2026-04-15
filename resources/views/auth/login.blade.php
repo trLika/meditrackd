@@ -3,7 +3,7 @@
 @section('content')
 <style>
 .glassmorphism-bg {
-    background: linear-gradient(135deg, #2E7D32 0%, #4CAF50 35%, #81C784 65%, #E8F5E9 100%);
+    background: linear-gradient(135deg, #5b2e7d 0%, #8e4caf 35%, #b081c7 65%, #e5d8e8 100%);
     position: relative;
     overflow: hidden;
 }
@@ -124,7 +124,7 @@
         <div class="glass-card p-5">
             <!-- Logo et titre -->
             <div class="text-center mb-4">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-20 mb-3" 
+                <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-white bg-opacity-20 mb-3"
                      style="width: 80px; height: 80px;">
                     <i class="bi bi-hospital text-white" style="font-size: 2.5rem;"></i>
                 </div>
@@ -135,7 +135,7 @@
             <!-- Formulaire -->
             <form action="{{ route('login') }}" method="POST">
                 @csrf
-                
+
                 <!-- Messages d'erreur -->
                 @if ($errors->any())
                     <div class="alert alert-danger bg-white bg-opacity-10 border border-white border-opacity-20 text-white mb-4">
@@ -154,7 +154,7 @@
                     <label class="form-label glass-label fw-bold">
                         <i class="bi bi-envelope me-2"></i> Adresse Email
                     </label>
-                    <input type="email" name="email" class="form-control form-control-lg glass-input rounded-pill" 
+                    <input type="email" name="email" class="form-control form-control-lg glass-input rounded-pill"
                            placeholder="votre@email.com" required>
                 </div>
 
@@ -162,7 +162,7 @@
                     <label class="form-label glass-label fw-bold">
                         <i class="bi bi-lock me-2"></i> Mot de passe
                     </label>
-                    <input type="password" name="password" class="form-control form-control-lg glass-input rounded-pill" 
+                    <input type="password" name="password" class="form-control form-control-lg glass-input rounded-pill"
                            placeholder="Votre mot de passe" required>
                 </div>
 
