@@ -2,7 +2,7 @@
 @section('content')
 <div class="container">
     <h2>Modifier le Service : {{ $service->name }}</h2>
-    <form action="{{ route('services.update', $service->id) }}" method="POST">
+    <form action="{{ route('admin.services.update', $service->id) }}" method="POST">
         @csrf
         @method('PUT')
         @include('admin.services._form')

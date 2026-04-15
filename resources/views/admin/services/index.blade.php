@@ -4,7 +4,8 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Liste des Services Hospitaliers</h2>
-        <a href="{{ route('services.create') }}" class="btn btn-primary">
+        {{-- Correction : ajout de admin. --}}
+        <a href="{{ route('admin.services.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Ajouter un service
         </a>
     </div>
@@ -30,10 +31,12 @@
                 <td class="align-middle">{{ $service->name }}</td>
                 <td class="align-middle">{{ $service->description ?? 'Aucune description' }}</td>
                 <td class="text-center align-middle">
-                    <a href="{{ route('services.edit', $service->id) }}" class="btn btn-sm btn-warning">
+                    {{-- Correction : ajout de admin. --}}
+                    <a href="{{ route('admin.services.edit', $service->id) }}" class="btn btn-sm btn-warning">
                         <i class="bi bi-pencil"></i> Modifier
                     </a>
-                    <form action="{{ route('services.destroy', $service->id) }}" method="POST" style="display:inline;">
+                    {{-- Correction : ajout de admin. --}}
+                    <form action="{{ route('admin.services.destroy', $service->id) }}" method="POST" style="display:inline;">
                         @csrf @method('DELETE')
                         <button class="btn btn-sm btn-danger" onclick="return confirm('Confirmer la suppression ?')">
                             <i class="bi bi-trash"></i> Supprimer

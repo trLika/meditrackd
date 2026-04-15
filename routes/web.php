@@ -1,35 +1,38 @@
 <?php
 
-use App\Http\Controllers\PatientController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ConsultationController;
-use App\Http\Controllers\OrdonnanceController;
-use App\Http\Controllers\Admin\ServiceController;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\{
+    PatientController,
+    AuthController,
+    DashboardController,
+    ConsultationController,
+    OrdonnanceController,
+    UserController
+};
+use App\Http\Controllers\Admin\{
+    ServiceController,
+    AdminController
+};
 use Illuminate\Support\Facades\Route;
 
 // 1. Routes publiques
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-
-// Routes d'authentification
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login'); // Note: 'showLogin' au lieu de 'showLoginForm'
+Route::get('/', function () { return view('welcome'); })->name('welcome');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
-// 2. Routes protégées par authentification (Middleware 'auth' suffit)
+// 2. Routes protégées
 Route::middleware(['auth'])->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // --- GESTION ADMINISTRATIVE ---
-    // On retire 'role:admin' pour éviter l'erreur, la vérification se fera dans le Contrôleur
-    Route::prefix('admin')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::resource('services', ServiceController::class);
-    });
+        Route::resource('users', UserController::class); // Nettoyé : suppression du doublon
+    
+
+        });
 
     // --- GESTION PATIENTS ---
     Route::resource('patients', PatientController::class);
