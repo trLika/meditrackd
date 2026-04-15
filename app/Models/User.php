@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles; // Import correct
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles; // 1. Import du trait Spatie
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasRoles; // 2. Ajout de HasRoles ici
+    use HasFactory, Notifiable, HasRoles; // Importation propre des traits
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        // 'role' a été supprimé ici car Spatie gère les rôles séparément
+        'role',
     ];
 
     /**
@@ -47,5 +45,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Relation avec les services
+     */
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'service_user');
     }
 }

@@ -86,6 +86,19 @@
                             <label class="form-check-label text-danger" for="is_critique"><strong>Marquer comme cas critique</strong></label>
                         </div>
 
+                        <div class="mb-3">
+    <label class="form-label fw-bold">Service médical</label>
+    <select name="service_id" class="form-select" required>
+        <option value="">Sélectionnez un service...</option>
+        @foreach($services as $service)
+            <option value="{{ $service->id }}"
+                {{ $patient->service_id == $service->id ? 'selected' : '' }}>
+                {{ $service->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
                         <div class="d-flex justify-content-between mt-4">
                             <a href="{{ route('patients.index') }}" class="btn btn-danger px-4">Annuler</a>
                             <button type="submit" class="btn btn-warning text-white px-4 fw-bold">Enregistrer les modifications</button>

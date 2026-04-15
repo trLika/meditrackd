@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     // Affiche la page de connexion
-    public function showLoginForm() {
+    public function showLogin() {
         return view('auth.login');
     }
 
@@ -21,7 +21,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
+
             // Rediriger vers la page prévue ou vers le dashboard par défaut
             $redirectUrl = session('url.intended', route('dashboard'));
             return redirect($redirectUrl);

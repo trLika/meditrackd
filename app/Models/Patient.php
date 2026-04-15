@@ -32,7 +32,11 @@ public function getAgeAttribute()//fonction pour calculer l'age
 // Dans Patient.php
 public function ordonnances()
 {
-    
+
     return $this->hasMany(Ordonnance::class);
+}
+
+public function service() {
+    return $this->belongsTo(Service::class);
 }
 }

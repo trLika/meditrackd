@@ -14,15 +14,21 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
+
 {
+
+$this->call([
+            ServiceSeeder::class,
+        ]);
     // 1. Création de l'Administrateur
+{
     \App\Models\User::create([
-        'name' => 'Admin MediTrack',
-        'email' => 'admin@med.com',
-        'password' => bcrypt('password'),
+        'name' => 'Administrateur',
+        'email' => 'admin@hopital.ml',
+        'password' => bcrypt('secret123'), // C'est le mot de passe
         'role' => 'admin',
     ]);
-
+}
     // 2. Création du Médecin
     \App\Models\User::create([
         'name' => 'Dr.Kate',
