@@ -51,7 +51,7 @@
                         </div>
                         <i class="bi bi-calendar-check fs-1 opacity-50 text-primary center"></i>
                     </div>
-                    <a href="{{ route('patients.index', ['filter' => 'today']) }}" class="stretched-link"></a>
+                    <a href="{{ route('consultations.index', ['today' => 1]) }}" class="stretched-link"></a>
                 </div>
             </div>
         </div>

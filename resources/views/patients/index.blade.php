@@ -103,10 +103,10 @@
                                         </span>
                                     </td>
                                     <td>{{ $patient->telephone }}</td>
-                                    <td>{{ $patient->adresse ?? '-' }}</td>
+                                    <td>{{ $patient->adresse }}</td>
                                     <td>
                                         <span class="badge bg-danger text-white">
-                                            {{ $patient->groupe_sanguin ?? '-' }}
+                                            {{ $patient->groupe_sanguin }}
                                         </span>
                                     </td>
                                     <td>

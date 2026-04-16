@@ -68,17 +68,14 @@ class ServiceController extends Controller
      */
     public function destroy(Service $service)
 {
-    dd('La méthode destroy a bien été appelée !');
-    // 1. Vérification des patients (c'est bon)
+    // 1. Vérification des patients
     if ($service->patients()->count() > 0) {
         return back()->with('error', 'Impossible de supprimer ce service : il contient encore des patients.');
     }
 
-    // 2. Suppression du service (c'est bon)
+    // 2. Suppression du service
     $service->delete();
 
-    // 3. LA CORRECTION : Utilise le nom de route correct affiché dans ton terminal !
-    // Ton terminal affiche : admin/services ... admin.services.index
     return redirect()->route('admin.services.index')->with('success', 'Service supprimé avec succès.');
 }
 }

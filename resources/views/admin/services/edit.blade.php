@@ -7,7 +7,7 @@
         @method('PUT')
         @include('admin.services._form')
         <button type="submit" class="btn btn-primary">Mettre à jour</button>
-        <a href="{{ route('services.index') }}" class="btn btn-secondary">Annuler</a>
+        <a href="{{ route('admin.services.index') }}" class="btn btn-secondary">Annuler</a>
     </form>
 </div>
 @endsection
