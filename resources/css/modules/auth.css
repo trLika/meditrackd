@@ -25,21 +25,21 @@
     color: white;
 }
 
-.glass-input:focus { 
-    background: rgba(255, 255, 255, 0.2); 
-    color: white; 
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
-.glass-label { 
-    color: rgba(255, 255, 255, 0.9); 
+.glass-label {
+    color: rgba(255, 255, 255, 0.9);
 }
 
-.glass-button { 
-    background: rgba(255, 255, 255, 0.2); 
-    color: white; 
-    transition: 0.3s; 
+.glass-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: 0.3s;
 }
 
-.glass-button:hover { 
-    background: rgba(255, 255, 255, 0.3); 
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
