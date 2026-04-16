@@ -1,0 +1,45 @@
+/*
+    Module: Authentication Page Styles
+    Description: Styles spécifiques pour les pages d'authentification (login, register)
+*/
+
+.glassmorphism-bg {
+    background: linear-gradient(135deg, #5b2e7d 0%, #8e4caf 35%, #b081c7 65%, #e5d8e8 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.glass-input:focus { 
+    background: rgba(255, 255, 255, 0.2); 
+    color: white; 
+}
+
+.glass-label { 
+    color: rgba(255, 255, 255, 0.9); 
+}
+
+.glass-button { 
+    background: rgba(255, 255, 255, 0.2); 
+    color: white; 
+    transition: 0.3s; 
+}
+
+.glass-button:hover { 
+    background: rgba(255, 255, 255, 0.3); 
+}

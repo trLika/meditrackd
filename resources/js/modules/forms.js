@@ -1,27 +1,36 @@
-// Validation JavaScript pour les formulaires MediTrackD
+// Module Forms - Gestion de la validation des formulaires
 
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // Validation du formulaire patient
-    const patientForm = document.getElementById('patientForm');
-    if (patientForm) {
-        initPatientValidation();
+// Fonction utilitaire de validation
+function validateField(field, isValid, errorMessage) {
+    // Supprimer les messages d'erreur précédents
+    const existingFeedback = field.parentNode.querySelector('.invalid-feedback');
+    if (existingFeedback) {
+        existingFeedback.remove();
     }
     
-    // Validation du formulaire consultation
-    const consultationForm = document.getElementById('consultationForm');
-    if (consultationForm) {
-        initConsultationValidation();
+    // Mettre à jour les classes de validation
+    field.classList.remove('is-valid', 'is-invalid');
+    
+    if (field.value.trim() === '') {
+        // Champ vide - pas de validation
+        return;
     }
     
-    // Animation du heart beat sur la page welcome
-    const heartIcon = document.querySelector('.heartBeat-active');
-    if (heartIcon) {
-        initHeartBeatAnimation();
+    if (isValid) {
+        field.classList.add('is-valid');
+    } else {
+        field.classList.add('is-invalid');
+        
+        // Ajouter le message d'erreur
+        const feedback = document.createElement('div');
+        feedback.className = 'invalid-feedback';
+        feedback.textContent = errorMessage;
+        field.parentNode.appendChild(feedback);
     }
-});
+}
 
-function initPatientValidation() {
+// Validation du formulaire patient
+export function initPatientValidation() {
     const form = document.getElementById('patientForm');
     const phoneInput = document.getElementById('telephone');
     
@@ -143,7 +152,8 @@ function initPatientValidation() {
     });
 }
 
-function initConsultationValidation() {
+// Validation du formulaire consultation
+export function initConsultationValidation() {
     const form = document.getElementById('consultationForm');
     
     // Validation en temps réel pour les textareas
@@ -267,57 +277,16 @@ function initConsultationValidation() {
     });
 }
 
-function initHeartBeatAnimation() {
-    const heartIcon = document.querySelector('.heartBeat-active');
-    if (heartIcon) {
-        // Ajouter les styles pour l'animation
-        heartIcon.style.fontSize = '15rem';
-        heartIcon.style.color = '#dc3545';
-        heartIcon.style.animation = 'heartBeat 1.5s ease-in-out infinite';
-        
-        // Créer les keyframes si elles n'existent pas
-        if (!document.querySelector('#heartBeatStyles')) {
-            const style = document.createElement('style');
-            style.id = 'heartBeatStyles';
-            style.textContent = `
-                @keyframes heartBeat {
-                    0% { transform: scale(1); }
-                    14% { transform: scale(1.3); }
-                    28% { transform: scale(1); }
-                    42% { transform: scale(1.3); }
-                    70% { transform: scale(1); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-}
-
-// Fonction utilitaire de validation
-function validateField(field, isValid, errorMessage) {
-    // Supprimer les messages d'erreur précédents
-    const existingFeedback = field.parentNode.querySelector('.invalid-feedback');
-    if (existingFeedback) {
-        existingFeedback.remove();
+export function initForms() {
+    // Validation du formulaire patient
+    const patientForm = document.getElementById('patientForm');
+    if (patientForm) {
+        initPatientValidation();
     }
     
-    // Mettre à jour les classes de validation
-    field.classList.remove('is-valid', 'is-invalid');
-    
-    if (field.value.trim() === '') {
-        // Champ vide - pas de validation
-        return;
-    }
-    
-    if (isValid) {
-        field.classList.add('is-valid');
-    } else {
-        field.classList.add('is-invalid');
-        
-        // Ajouter le message d'erreur
-        const feedback = document.createElement('div');
-        feedback.className = 'invalid-feedback';
-        feedback.textContent = errorMessage;
-        field.parentNode.appendChild(feedback);
+    // Validation du formulaire consultation
+    const consultationForm = document.getElementById('consultationForm');
+    if (consultationForm) {
+        initConsultationValidation();
     }
 }
