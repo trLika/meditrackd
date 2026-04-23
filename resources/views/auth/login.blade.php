@@ -4,13 +4,13 @@
 <style>
     /* Ton style glassmorphism reste inchangé */
     .glassmorphism-bg {
-<<<<<<< HEAD
+
         background: linear-gradient(-50deg, #dc3545, #74d1f8, #b2dafa, #a34862);
         background-size: 400% 400%;
         animation: gradientShift 15s ease infinite;
-=======
+
         background: linear-gradient(-50deg, #640629, #74d1f8, #b2dafa, #a34862);
->>>>>>> bff537f7d24ece0821f9fe0015e28a2d91c4ed16
+
         min-height: 100vh;
         display: flex;
         align-items: center;

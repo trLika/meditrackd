@@ -3,13 +3,13 @@
 @section('content')
 <style>
 .glassmorphism-bg {
-<<<<<<< HEAD
+
     background: linear-gradient(-50deg, #dc3545, #74d1f8, #b2dafa, #a34862);
     background-size: 400% 400%;
     animation: gradientShift 15s ease infinite;
-=======
+
     background: linear-gradient(-50deg, #640629, #74d1f8, #b2dafa, #a34862);
->>>>>>> bff537f7d24ece0821f9fe0015e28a2d91c4ed16
+
     position: relative;
     overflow: hidden;
 }
@@ -158,27 +158,25 @@
         <div class="row align-items-center" style="min-height: 80vh;">
             <div class="col-md-6">
                 <div class="glass-card p-5">
-<<<<<<< HEAD
-                    <h1 class="display-3 mb-4" style="color: #dc3545; text-shadow: 0 0 30px rgba(220, 53, 69, 0.5); font-weight: bold;">
-=======
+
+
                     <h1 class="display-3 mb-4" style="color: #dc3545; text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4); font-weight: bold;">
->>>>>>> bff537f7d24ece0821f9fe0015e28a2d91c4ed16
+
                         <i class="bi bi-hospital me-3"></i>MediTrackD
                     </h1>
                     <p class="lead glass-text mb-4">
                         Gérez vos dossiers médicaux de manière efficace et sécurisée avec MediTrackD, votre système de gestion intégré de dossiers médicaux.
                     </p>
                     <div class="mt-4">
-<<<<<<< HEAD
-                        <a href="{{ route('dashboard') }}" class="btn glass-button btn-lg px-5 py-3 rounded-pill fw-bold" style="background-color: #dc3545; border-color: #dc3545; color: white;">
-=======
+
+
                         <a href="{{ route('dashboard') }}" class="btn btn-lg px-5 py-3 rounded-pill fw-bold" style="background: linear-gradient(45deg, #dc3545, #a02833); color: white; border: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);" onmouseover="this.style.background='linear-gradient(45deg, #ff4757, #c0322); this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(220, 53, 69, 0.4)';" onmouseout="this.style.background='linear-gradient(45deg, #dc3545, #a02833); this.style.transform='translateY(0px)'; this.style.boxShadow='0 4px 15px rgba(220, 53, 69, 0.3)';">
->>>>>>> bff537f7d24ece0821f9fe0015e28a2d91c4ed16
+
                             <i class="bi bi-arrow-right-circle me-2"></i>
                             Accéder à MediTrackD
                         </a>
                     </div>
-                    
+
                     <!-- Features -->
                     <div class="row mt-5">
                         <div class="col-4 text-center">
