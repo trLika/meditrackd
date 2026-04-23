@@ -4,11 +4,19 @@
 <style>
     /* Ton style glassmorphism reste inchangé */
     .glassmorphism-bg {
-        background: linear-gradient(135deg, #5b2e7d 0%, #8e4caf 35%, #b081c7 65%, #e5d8e8 100%);
+        background: linear-gradient(-50deg, #dc3545, #74d1f8, #b2dafa, #a34862);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
         min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
     .glass-card {
         background: rgba(255, 255, 255, 0.15);

@@ -3,9 +3,17 @@
 @section('content')
 <style>
 .glassmorphism-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(-50deg, #dc3545, #74d1f8, #b2dafa, #a34862);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     position: relative;
     overflow: hidden;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .glassmorphism-bg::before {
@@ -146,14 +154,14 @@
         <div class="row align-items-center" style="min-height: 80vh;">
             <div class="col-md-6">
                 <div class="glass-card p-5">
-                    <h1 class="display-3 glass-title mb-4">
+                    <h1 class="display-3 mb-4" style="color: #dc3545; text-shadow: 0 0 30px rgba(220, 53, 69, 0.5); font-weight: bold;">
                         <i class="bi bi-hospital me-3"></i>MediTrackD
                     </h1>
                     <p class="lead glass-text mb-4">
                         Gérez vos dossiers médicaux de manière efficace et sécurisée avec MediTrackD, votre système de gestion intégré de dossiers médicaux.
                     </p>
                     <div class="mt-4">
-                        <a href="{{ route('dashboard') }}" class="btn glass-button btn-lg px-5 py-3 rounded-pill fw-bold">
+                        <a href="{{ route('dashboard') }}" class="btn glass-button btn-lg px-5 py-3 rounded-pill fw-bold" style="background-color: #dc3545; border-color: #dc3545; color: white;">
                             <i class="bi bi-arrow-right-circle me-2"></i>
                             Accéder à MediTrackD
                         </a>

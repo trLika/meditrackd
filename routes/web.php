@@ -10,7 +10,8 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\Admin\{
     ServiceController,
-    AdminController
+    AdminController,
+    MedecinServiceController
 };
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,18 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::resource('services', ServiceController::class);
+        Route::post('services/{service}/assign-medecin', [ServiceController::class, 'assignMedecin'])->name('services.assign-medecin');
         Route::resource('users', UserController::class); // Nettoyé : suppression du doublon
-    
-
+        
+        // Routes pour la gestion des assignations médecins-services
+        Route::get('medecins-services', [MedecinServiceController::class, 'index'])->name('medecins-services.index');
+        Route::get('medecins-services/non-assignes', [MedecinServiceController::class, 'medecinsNonAssignes'])->name('medecins-services.non-assignes');
+        Route::get('medecins-services/search', [MedecinServiceController::class, 'search'])->name('medecins-services.search');
+        Route::get('medecins-services/{service}', [MedecinServiceController::class, 'show'])->name('medecins-services.show');
+        Route::post('medecins-services/assign', [MedecinServiceController::class, 'assignMedecinBulk'])->name('medecins-services.assign');
+        Route::post('medecins-services/{service}/assign', [MedecinServiceController::class, 'assignMedecin'])->name('medecins-services.assign-service');
+        Route::delete('medecins-services/{service}/{medecin}', [MedecinServiceController::class, 'removeMedecin'])->name('medecins-services.remove');
+        
         });
 
     // --- GESTION PATIENTS ---

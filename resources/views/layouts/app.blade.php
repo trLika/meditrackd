@@ -7,8 +7,27 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        body { background-color: #e3f2fd; }
-        .flex-grow-1 { background-color: #e3f2fd; }
+        body { 
+            background: linear-gradient(-50deg, #dc3545, #74d1f8, #b2dafa, #a34862);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .flex-grow-1 { 
+            background: transparent;
+        }
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -38,7 +57,7 @@
                             {{-- Menu Administration sécurisé --}}
                             @if(Auth::user()->role === 'admin')
                             <li class="nav-item mb-2">
-                                <a href="{{ route('admin.index') }}" class="nav-link text-white {{ request()->is('admin*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.index') }}" class="nav-link text-white {{ request()->is('admin') ? 'active' : '' }}">
                                     <i class="bi bi-shield-lock me-2 text-warning"></i> Administration
                                 </a>
                             </li>
