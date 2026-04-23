@@ -21,20 +21,13 @@ class PatientController extends Controller
         $query = Patient::query();
         $user = Auth::user();
         
-        // Log simple pour debug
-        \Log::info('Patient Index:', [
-            'user_name' => $user->name,
-            'user_role' => $user->getRoleNames()->first()
-        ]);
-
+        
         // Si c'est l'admin, pas de filtre
         if ($user->hasRole('admin') || $user->name === 'Administrateur') {
             // Admin voit tous les patients - aucun filtre
-            \Log::info('Admin access - showing all patients');
         } else {
             // Médecin - filtre par ses services
             $userServices = $user->services()->pluck('services.id');
-            \Log::info('Doctor access - filtering by services:', ['service_ids' => $userServices->toArray()]);
             
             if ($userServices->isNotEmpty()) {
                 $query->whereIn('service_id', $userServices);
@@ -81,9 +74,12 @@ class PatientController extends Controller
             $isAdmin = true;
         }
         
-        $services = $isAdmin ? 
-            Service::all() : 
-            $user->services;
+        // Admin voit tous les services, médecin voit seulement ses services
+        if ($user->name === 'Administrateur' || $isAdmin) {
+            $services = Service::all();
+        } else {
+            $services = $user->services;
+        }
             
         return view('patients.create', compact('services'));
     }
@@ -143,12 +139,17 @@ class PatientController extends Controller
             $isAdmin = true;
         }
         
-        // Vérifier si le médecin a accès à ce patient
-        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+        // Vérifier si le médecin a accès à ce patient (admin a toujours accès)
+        if ($user->name !== 'Administrateur' && !$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
             abort(403, 'Accès non autorisé à ce patient.');
         }
         
-        $services = $isAdmin ? Service::all() : $user->services;
+        // Admin voit tous les services, médecin voit seulement ses services
+        if ($user->name === 'Administrateur' || $isAdmin) {
+            $services = Service::all();
+        } else {
+            $services = $user->services;
+        }
         return view('patients.edit', compact('patient', 'services'));
     }
 
@@ -162,8 +163,8 @@ class PatientController extends Controller
             $isAdmin = true;
         }
         
-        // Vérifier si le médecin a accès à ce patient
-        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+        // Vérifier si le médecin a accès à ce patient (admin a toujours accès)
+        if ($user->name !== 'Administrateur' && !$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
             abort(403, 'Accès non autorisé à ce patient.');
         }
         
@@ -210,8 +211,8 @@ class PatientController extends Controller
             $isAdmin = true;
         }
         
-        // Vérifier si le médecin a accès à ce patient
-        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+        // Vérifier si le médecin a accès à ce patient (admin a toujours accès)
+        if ($user->name !== 'Administrateur' && !$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
             abort(403, 'Accès non autorisé à ce patient.');
         }
         
@@ -238,8 +239,8 @@ class PatientController extends Controller
             $isAdmin = true;
         }
         
-        // Vérifier si le médecin a accès à ce patient
-        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+        // Vérifier si le médecin a accès à ce patient (admin a toujours accès)
+        if ($user->name !== 'Administrateur' && !$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
             abort(403, 'Accès non autorisé à ce patient.');
         }
         

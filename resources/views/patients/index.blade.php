@@ -115,7 +115,7 @@
                                                class="btn btn-sm btn-outline-primary" title="Voir les détails">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            @if(auth()->user()->role !== 'stagiaire')
+                                            @if(auth()->user()->name === 'Administrateur' || (!auth()->user()->hasRole('stagiaire')))
                                                 <a href="{{ route('patients.edit', $patient->id) }}" 
                                                    class="btn btn-sm btn-outline-warning" title="Modifier">
                                                     <i class="bi bi-pencil"></i>
