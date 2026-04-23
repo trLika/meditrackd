@@ -19,11 +19,29 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $query = Patient::query();
+        $user = Auth::user();
+        
+        // Log simple pour debug
+        \Log::info('Patient Index:', [
+            'user_name' => $user->name,
+            'user_role' => $user->getRoleNames()->first()
+        ]);
 
-        // Restriction : Si l'utilisateur est médecin (non-admin), on filtre par ses services
-        if (Auth::user()->role !== 'admin') {
-            $userServices = Auth::user()->services()->pluck('id');
-            $query->whereIn('service_id', $userServices);
+        // Si c'est l'admin, pas de filtre
+        if ($user->hasRole('admin') || $user->name === 'Administrateur') {
+            // Admin voit tous les patients - aucun filtre
+            \Log::info('Admin access - showing all patients');
+        } else {
+            // Médecin - filtre par ses services
+            $userServices = $user->services()->pluck('services.id');
+            \Log::info('Doctor access - filtering by services:', ['service_ids' => $userServices->toArray()]);
+            
+            if ($userServices->isNotEmpty()) {
+                $query->whereIn('service_id', $userServices);
+            } else {
+                // Si le médecin n'a pas de services, retourner une liste vide
+                $query->whereRaw('1 = 0'); // Force empty result
+            }
         }
 
         if ($request->filled('search')) {
@@ -40,18 +58,54 @@ class PatientController extends Controller
             $query->where('is_critique', true);
         }
 
+        // Log la requête et les résultats
         $patients = $query->orderBy('nom', 'asc')->paginate(10);
+        \Log::info('Patient Query Results:', [
+            'total_count' => $patients->total(),
+            'current_page' => $patients->currentPage(),
+            'sql' => $query->toSql(),
+            'bindings' => $query->getBindings()
+        ]);
+
         return view('patients.index', compact('patients'));
     }
 
     public function create()
     {
-      $services = \App\Models\Service::all();  // Chargement des services pour le select
+        // Limiter les services selon le rôle de l'utilisateur
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('admin');
+        
+        // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
+        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+            $isAdmin = true;
+        }
+        
+        $services = $isAdmin ? 
+            Service::all() : 
+            $user->services;
+            
         return view('patients.create', compact('services'));
     }
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('admin');
+        
+        // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
+        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+            $isAdmin = true;
+        }
+        
+        // Pour les médecins, valider que le service appartient à leurs services
+        if (!$isAdmin) {
+            $userServices = $user->services()->pluck('services.id');
+            $request->merge([
+                'service_id' => $userServices->contains($request->service_id) ? $request->service_id : $userServices->first()
+            ]);
+        }
+
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
@@ -80,12 +134,45 @@ class PatientController extends Controller
     public function edit($id)
     {
         $patient = Patient::findOrFail($id);
-        $services = Service::all(); // Nécessaire pour modifier le service
+        
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('admin');
+        
+        // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
+        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+            $isAdmin = true;
+        }
+        
+        // Vérifier si le médecin a accès à ce patient
+        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
+        
+        $services = $isAdmin ? Service::all() : $user->services;
         return view('patients.edit', compact('patient', 'services'));
     }
 
     public function update(Request $request, Patient $patient)
     {
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('admin');
+        
+        // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
+        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+            $isAdmin = true;
+        }
+        
+        // Vérifier si le médecin a accès à ce patient
+        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
+        
+        // Pour les médecins, limiter les services à leurs propres services
+        if (!$isAdmin) {
+            $request->merge([
+                'service_id' => $user->services()->pluck('services.id')->contains($request->service_id) ? $request->service_id : $patient->service_id
+            ]);
+        }
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
@@ -114,6 +201,20 @@ class PatientController extends Controller
     public function show($id)
     {
         $patient = Patient::findOrFail($id);
+        
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('admin');
+        
+        // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
+        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+            $isAdmin = true;
+        }
+        
+        // Vérifier si le médecin a accès à ce patient
+        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
+        
         $consultations = $patient->consultations()->orderBy('date_consultation', 'desc')->get();
 
         ActivityLog::create([
@@ -128,6 +229,20 @@ class PatientController extends Controller
     public function destroy($id)
     {
         $patient = Patient::findOrFail($id);
+        
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('admin');
+        
+        // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
+        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+            $isAdmin = true;
+        }
+        
+        // Vérifier si le médecin a accès à ce patient
+        if (!$isAdmin && !$user->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
+        
         $patient->delete();
         return redirect()->route('patients.index')->with('success', 'Patient supprimé.');
     }

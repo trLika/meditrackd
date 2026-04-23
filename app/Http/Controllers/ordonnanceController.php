@@ -6,16 +6,23 @@ use App\Models\Ordonnance;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class OrdonnanceController extends Controller
 {
     // Affiche le formulaire (depuis le dossier patient)
-   public function create(Request $request)
-{
-    $patient_id = $request->query('patient_id');
-    $patient = Patient::findOrFail($patient_id);
-    return view('ordonnances.create', compact('patient'));
-}
+    public function create(Request $request)
+    {
+        $patient_id = $request->query('patient_id');
+        $patient = Patient::findOrFail($patient_id);
+        
+        // Vérifier si le médecin a accès à ce patient
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
+        
+        return view('ordonnances.create', compact('patient'));
+    }
     // Enregistre l'ordonnance en base de données
     public function store(Request $request)
     {
@@ -23,6 +30,12 @@ class OrdonnanceController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'contenu' => 'required', // Les médicaments
         ]);
+        
+        // Vérifier si le médecin a accès à ce patient
+        $patient = Patient::findOrFail($request->patient_id);
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
 
         $ordonnance = Ordonnance::create([
             'patient_id' => $request->patient_id,
@@ -39,7 +52,11 @@ class OrdonnanceController extends Controller
     public function generatePDF($id)
     {
         $ordonnance = Ordonnance::with('patient', 'user')->findOrFail($id);
-
+        
+        // Vérifier si le médecin a accès à cette ordonnance
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->services()->pluck('services.id')->contains($ordonnance->patient->service_id)) {
+            abort(403, 'Accès non autorisé à cette ordonnance.');
+        }
 
         $pdf = Pdf::loadView('ordonnances.pdf_template', compact('ordonnance'));
 

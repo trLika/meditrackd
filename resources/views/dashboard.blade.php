@@ -5,7 +5,22 @@
 
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class ="text-dark text-uppercase fw-bold">Tableau de Bord</h2>
+        <div>
+            <h2 class="text-dark text-uppercase fw-bold">
+                Tableau de Bord
+                {{-- DEBUG: {{ auth()->user()->name }} - Role: {{ auth()->user()->getRoleNames()->first() }} - isAdmin: {{ auth()->user()->hasRole('admin') ? 'YES' : 'NO' }} --}}
+                @if(auth()->user()->name !== 'Administrateur' && !auth()->user()->hasRole('admin'))
+                    <small class="text-muted fs-6">- Mes Services</small>
+                @endif
+            </h2>
+            @if(auth()->user()->name !== 'Administrateur' && !auth()->user()->hasRole('admin') && isset($userServices) && $userServices->count() > 0)
+                <div class="mt-2">
+                    @foreach($userServices as $service)
+                        <span class="badge bg-primary me-1">{{ $service->name }}</span>
+                    @endforeach
+                </div>
+            @endif
+        </div>
         <span class="badge bg-pink shadow-sm p-2">{{ now()->format('d/m/Y H:i') }}</span>
     </div>
 
@@ -16,7 +31,13 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="text-uppercase opacity-75">Le total de patients enregistrés</h6>
+                            <h6 class="text-uppercase opacity-75">
+                                @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin')) 
+                                    Total patients enregistrés
+                                @else 
+                                    Mes patients
+                                @endif
+                            </h6>
                             <h1 class="display-5 fw-bold">{{ $totalPatients }}</h1>
                         </div>
                         <i class="bi bi-people fs-1 opacity-50 text-dark"></i>
@@ -31,7 +52,13 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="text-uppercase opacity-75" >Les cas critiques</h6>
+                            <h6 class="text-uppercase opacity-75">
+                                @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin')) 
+                                    Cas critiques
+                                @else 
+                                    Mes cas critiques
+                                @endif
+                            </h6>
                             <h1 class="display-5 fw-bold">{{ $criticalCases }}</h1>
                         </div>
                         <i class="bi bi-exclamation-triangle-fill fs-1 opacity-50 text-warning"></i>
@@ -46,7 +73,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h6 class="text-uppercase opacity-75">Consultations effectuées / Jour</h6>
+                            <h6 class="text-uppercase opacity-75">Consultations aujourd'hui</h6>
                             <h1 class="display-5 fw-bold">{{ $consultationsToday }}</h1>
                         </div>
                         <i class="bi bi-calendar-check fs-1 opacity-50 text-primary center"></i>
@@ -80,7 +107,14 @@
         <div class="col-lg-7">
             <div class="card shadow border-0 h-100">
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
-                    <h5 class="mb-0"><i class="bi bi-people me-2 text-dark"></i> Derniers patients enregistrés</h5>
+                    <h5 class="mb-0">
+                        <i class="bi bi-people me-2 text-dark"></i> 
+                        @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin')) 
+                            Derniers patients enregistrés
+                        @else 
+                            Mes derniers patients
+                        @endif
+                    </h5>
                     <span class="badge bg-danger rounded-pill">{{ $totalPatients }} patients</span>
                 </div>
                 <div class="card-body p-0" style="max-height: 350px; overflow-y: auto;">
@@ -116,7 +150,7 @@
     </div>
 
     <!--Affichage des logs récents pour les admins-->
-    @if(auth()->user()->role === 'admin')
+    @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin'))
     <div class="row g-4">
         <div class="col-12">
             <div class="card shadow border-0">

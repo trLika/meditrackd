@@ -7,6 +7,7 @@ use App\Models\Consultation;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultationController extends Controller
 {
@@ -17,6 +18,14 @@ class ConsultationController extends Controller
     {
         // Récupère les consultations avec les infos patient pour éviter le problème N+1
         $consultations = Consultation::with('patient');
+        
+        // Si c'est un médecin, filtrer par ses services
+        if (!Auth::user()->hasRole('admin')) {
+            $userServices = Auth::user()->services()->pluck('services.id');
+            $consultations = $consultations->whereHas('patient', function($query) use ($userServices) {
+                $query->whereIn('service_id', $userServices);
+            });
+        }
         
         // Filtre pour les consultations du jour
         if ($request->has('today') && $request->today) {
@@ -32,36 +41,51 @@ class ConsultationController extends Controller
      */
     public function create(Patient $patient)
     {
+        // Vérifier si le médecin a accès à ce patient
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
+        
         return view('consultations.create', compact('patient'));
     }
 
     /**
      * Enregistre une nouvelle consultation.
      */
-    public function store(Request $request, $patientId) // Change ici pour recevoir l'ID brut
-{
-    // 1. Récupère le patient manuellement pour être certain qu'il existe
-    $patient = Patient::findOrFail($patientId);
+    public function store(Request $request, $patientId)
+    {
+        // 1. Récupère le patient manuellement pour être certain qu'il existe
+        $patient = Patient::findOrFail($patientId);
+        
+        // 2. Vérifier si le médecin a accès à ce patient
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->services()->pluck('services.id')->contains($patient->service_id)) {
+            abort(403, 'Accès non autorisé à ce patient.');
+        }
 
-    // 2. Validation
-    $validated = $this->validateConsultation($request);
+        // 3. Validation
+        $validated = $this->validateConsultation($request);
 
-    // 3. Force l'ID du patient
-    $validated['patient_id'] = $patient->id;
+        // 4. Force l'ID du patient
+        $validated['patient_id'] = $patient->id;
 
-    // 4. Création
-    Consultation::create($validated);
+        // 5. Création
+        Consultation::create($validated);
 
-    // 5. Redirection
-    return redirect()->route('patients.show', $patient->id)
-        ->with('success', 'Consultation enregistrée.');
-}
+        // 6. Redirection
+        return redirect()->route('patients.show', $patient->id)
+            ->with('success', 'Consultation enregistrée.');
+    }
     /**
      * Génère un PDF d'ordonnance.
      */
     public function generatePDF($id)
     {
         $consultation = Consultation::with('patient')->findOrFail($id);
+        
+        // Vérifier si le médecin a accès à cette consultation
+        if (!Auth::user()->hasRole('admin') && !Auth::user()->services()->pluck('services.id')->contains($consultation->patient->service_id)) {
+            abort(403, 'Accès non autorisé à cette consultation.');
+        }
 
         $pdf = Pdf::loadView('consultations.pdf', [
             'consultation' => $consultation
