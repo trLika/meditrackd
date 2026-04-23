@@ -69,12 +69,43 @@
                 {{-- Contenu principal --}}
                 <div class="flex-grow-1" style="margin-left: 260px; min-height: 100vh; background: transparent; overflow-y: scroll !important;">
                     <header class="navbar navbar-expand-md navbar-light bg-transparent py-3 px-4 mb-3">
-                        <div class="container-fluid">
-                            <div class="ms-auto dropdown">
-                                <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-circle me-1 text-danger"></i> {{ Auth::user()->name }}
+                        <div class="container-fluid d-flex justify-content-between">
+                            <div class="navbar-text text-white">
+                                <h5 class="mb-0 fw-bold">MediTrackD</h5>
+                            </div>
+                            
+                            <div class="dropdown">
+                                <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center" data-bs-toggle="dropdown">
+                                    <i class="bi bi-person-circle me-2 text-danger"></i> 
+                                    <span>{{ Auth::user()->name }}</span>
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 280px;">
+                                    <li class="px-3 py-3 border-bottom">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle bg-danger text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 45px; height: 45px;">
+                                                <i class="bi bi-person-fill fs-5"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <div class="fw-bold text-dark">{{ Auth::user()->name }}</div>
+                                                <div class="text-muted small">{{ Auth::user()->email }}</div>
+                                                <div class="mt-2">
+                                                    @if(Auth::user()->hasRole('admin'))
+                                                        <span class="badge bg-danger">Administrateur</span>
+                                                    @elseif(Auth::user()->hasRole('medecin'))
+                                                        <span class="badge bg-primary">Médecin</span>
+                                                        @if(Auth::user()->services()->count() > 0)
+                                                            <div class="small text-muted mt-1">
+                                                                <i class="bi bi-hospital me-1"></i>
+                                                                {{ Auth::user()->services()->pluck('name')->implode(', ') }}
+                                                            </div>
+                                                        @endif
+                                                    @else
+                                                        <span class="badge bg-secondary">Utilisateur</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf

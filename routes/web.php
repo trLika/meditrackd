@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     OrdonnanceController,
     UserController
 };
+use App\Http\Controllers\Auth\DoctorRegisterController;
 use App\Http\Controllers\Admin\{
     ServiceController,
     AdminController,
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () { return view('welcome'); })->name('welcome');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register-doctor', [DoctorRegisterController::class, 'showRegistrationForm'])->name('register.doctor.form');
+Route::post('/register-doctor', [DoctorRegisterController::class, 'register'])->name('register.doctor');
 
 // 2. Routes protégées
 Route::middleware(['auth'])->group(function () {
