@@ -94,6 +94,7 @@ class ServiceController extends Controller
      * Supprime un service.
      */
     public function destroy(Service $service)
+<<<<<<< HEAD
     {
         // 1. Vérification des patients
         if ($service->patients()->count() > 0) {
@@ -108,4 +109,17 @@ class ServiceController extends Controller
 
         return redirect()->route('admin.services.index')->with('success', 'Service supprimé avec succès.');
     }
+=======
+{
+    // 1. Vérification des patients
+    if ($service->patients()->count() > 0) {
+        return back()->with('error', 'Impossible de supprimer ce service : il contient encore des patients.');
+    }
+
+    // 2. Suppression du service
+    $service->delete();
+
+    return redirect()->route('admin.services.index')->with('success', 'Service supprimé avec succès.');
+}
+>>>>>>> bff537f7d24ece0821f9fe0015e28a2d91c4ed16
 }

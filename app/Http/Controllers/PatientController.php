@@ -35,6 +35,11 @@ class PatientController extends Controller
             });
         }
 
+        // Filtre pour les patients critiques
+        if ($request->filled('critique') && $request->critique) {
+            $query->where('is_critique', true);
+        }
+
         $patients = $query->orderBy('nom', 'asc')->paginate(10);
         return view('patients.index', compact('patients'));
     }
@@ -53,6 +58,9 @@ class PatientController extends Controller
             'sexe' => 'required|in:M,F',
             'date_naissance' => 'required|date',
             'telephone' => 'required|string|regex:/^[67][0-9]{7}$/',
+            'adresse' => 'nullable|string|max:255',
+            'groupe_sanguin' => 'nullable|string|max:10',
+            'antecedents' => 'nullable|string',
             'service_id' => 'required|exists:services,id', // Validation du service
             'is_critique' => 'boolean'
         ]);
@@ -81,8 +89,14 @@ class PatientController extends Controller
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
-            'service_id' => 'required|exists:services,id', // Ajout du service
-            // ... autres validations existantes
+            'sexe' => 'required|in:M,F',
+            'date_naissance' => 'required|date',
+            'telephone' => 'required|string|regex:/^[67][0-9]{7}$/',
+            'adresse' => 'nullable|string|max:255',
+            'groupe_sanguin' => 'nullable|string|max:10',
+            'antecedents' => 'nullable|string',
+            'service_id' => 'required|exists:services,id',
+            'is_critique' => 'boolean'
         ]);
 
         $validated['is_critique'] = $request->has('is_critique');

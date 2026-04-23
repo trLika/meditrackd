@@ -13,10 +13,17 @@ class ConsultationController extends Controller
     /**
      * Affiche la liste des consultations.
      */
-    public function index()
+    public function index(Request $request)
     {
         // Récupère les consultations avec les infos patient pour éviter le problème N+1
-        $consultations = Consultation::with('patient')->latest()->get();
+        $consultations = Consultation::with('patient');
+        
+        // Filtre pour les consultations du jour
+        if ($request->has('today') && $request->today) {
+            $consultations = $consultations->whereDate('created_at', today());
+        }
+        
+        $consultations = $consultations->latest()->get();
         return view('consultations.index', compact('consultations'));
     }
 
