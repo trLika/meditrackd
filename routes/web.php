@@ -56,6 +56,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('medecins-services/{service}/assign', [MedecinServiceController::class, 'assignMedecin'])->name('medecins-services.assign-service');
         Route::delete('medecins-services/{service}/{medecin}', [MedecinServiceController::class, 'removeMedecin'])->name('medecins-services.remove');
         
+        // --- RAPPORTS ET STATISTIQUES ---
+        Route::get('reports', [\App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/export', [\App\Http\Controllers\ReportController::class, 'exportPDF'])->name('reports.export');
+        
         });
 
     // --- GESTION PATIENTS ---

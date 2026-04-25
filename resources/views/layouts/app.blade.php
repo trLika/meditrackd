@@ -55,10 +55,15 @@
                             </li>
 
                             {{-- Menu Administration sécurisé --}}
-                            @if(Auth::user()->role === 'admin')
+                            @if(Auth::user()->hasRole('admin') || Auth::user()->name === 'Administrateur')
                             <li class="nav-item mb-2">
                                 <a href="{{ route('admin.index') }}" class="nav-link text-white {{ request()->is('admin') ? 'active' : '' }}">
                                     <i class="bi bi-shield-lock me-2 text-warning"></i> Administration
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a href="{{ route('admin.reports.index') }}" class="nav-link text-white {{ request()->is('admin/reports*') ? 'active' : '' }}">
+                                    <i class="bi bi-graph-up-arrow me-2 text-info"></i> Rapports & Stats
                                 </a>
                             </li>
                             @endif
