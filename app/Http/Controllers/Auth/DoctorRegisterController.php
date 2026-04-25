@@ -39,6 +39,8 @@ class DoctorRegisterController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'in:medecin,stagiaire'],
+            'security_question' => ['required', 'string', 'max:255'],
+            'security_answer' => ['required', 'string', 'max:255'],
         ];
 
         // Le service_id est requis uniquement pour les médecins
@@ -59,6 +61,8 @@ class DoctorRegisterController extends Controller
             'name' => $request->prenom . ' ' . $request->nom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'security_question' => $request->security_question,
+            'security_answer' => $request->security_answer,
         ]);
 
         // Assigner le rôle selon le choix
@@ -85,7 +89,7 @@ class DoctorRegisterController extends Controller
             'user_id' => $user->id,
             'user_name' => $user->name,
             'user_role' => $request->role,
-            'assigned_services' => $user->services()->pluck('name', 'id')->toArray()
+            'assigned_services' => $user->services()->pluck('services.name', 'services.id')->toArray()
         ]);
 
         // Connecter automatiquement l'utilisateur

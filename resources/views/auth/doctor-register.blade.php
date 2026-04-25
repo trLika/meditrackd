@@ -190,6 +190,17 @@
                                class="form-control glass-input" placeholder="Répéter le mot de passe" required minlength="8">
                     </div>
                 </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label glass-label">Question de sécurité</label>
+                        <input type="text" name="security_question" class="form-control glass-input" placeholder="Ex: Ville de naissance ?" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label glass-label">Réponse</label>
+                        <input type="text" name="security_answer" class="form-control glass-input" placeholder="Votre réponse" required>
+                    </div>
+                </div>
 
                 <div class="mb-4" id="service_section">
                     <label class="form-label glass-label">

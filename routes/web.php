@@ -23,6 +23,17 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register-doctor', [DoctorRegisterController::class, 'showRegistrationForm'])->name('register.doctor.form');
 Route::post('/register-doctor', [DoctorRegisterController::class, 'register'])->name('register.doctor');
 
+// Routes pour la réinitialisation du mot de passe
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+// Réinitialisation via question de sécurité
+Route::get('/reset-security', [AuthController::class, 'showSecurityQuestionForm'])->name('password.security.step1');
+Route::match(['get', 'post'], '/reset-security/verify', [AuthController::class, 'verifyEmailForSecurity'])->name('password.security.step2');
+Route::post('/reset-security/reset', [AuthController::class, 'resetWithSecurityAnswer'])->name('password.security.reset');
+
 // 2. Routes protégées
 Route::middleware(['auth'])->group(function () {
 

@@ -78,6 +78,18 @@
             <form action="{{ route('login') }}" method="POST">
                 @csrf
 
+                @if (session('success'))
+                    <div class="alert alert-success mb-4" style="background: rgba(40, 167, 69, 0.2); border: 1px solid rgba(40, 167, 69, 0.3); color: white;">
+                        <small><i class="bi bi-check-circle me-2"></i>{{ session('success') }}</small>
+                    </div>
+                @endif
+
+                @if (session('status'))
+                    <div class="alert alert-info mb-4" style="background: rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.3); color: white;">
+                        <small><i class="bi bi-info-circle me-2"></i>{{ session('status') }}</small>
+                    </div>
+                @endif
+
                 @if ($errors->any())
                     <div class="alert alert-danger mb-4" style="background: rgba(220, 53, 69, 0.2); border: 1px solid rgba(220, 53, 69, 0.3); color: white;">
                         <small><i class="bi bi-exclamation-triangle me-2"></i>Identifiants incorrects.</small>
@@ -100,11 +112,16 @@
                            class="form-control glass-input" placeholder="••••••••" required>
                 </div>
 
-                <div class="mb-3 form-check">
-                    <input type="checkbox" name="remember" class="form-check-input" id="remember">
-                    <label class="form-check-label text-white-50" for="remember">
-                        <i class="bi bi-check-circle me-1"></i>Se souvenir de moi
-                    </label>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div class="form-check">
+                        <input type="checkbox" name="remember" class="form-check-input" id="remember">
+                        <label class="form-check-label text-white-50" for="remember">
+                            Se souvenir
+                        </label>
+                    </div>
+                    <a href="{{ route('password.request') }}" class="text-white-50 text-decoration-none small">
+                        Mot de passe oublié ?
+                    </a>
                 </div>
 
                 <button type="submit" class="btn w-100 py-3 fw-bold mb-3" style="background: linear-gradient(45deg, #dc3545, #a02833); color: white; border: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); border-radius: 8px;" onmouseover="this.style.background='linear-gradient(45deg, #ff4757, #c0322); this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 20px rgba(220, 53, 69, 0.4)';" onmouseout="this.style.background='linear-gradient(45deg, #dc3545, #a02833); this.style.transform='translateY(0px)'; this.style.boxShadow='0 4px 15px rgba(220, 53, 69, 0.3)';">
