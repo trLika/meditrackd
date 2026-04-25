@@ -41,11 +41,17 @@ class DoctorRegisterController extends Controller
             'role' => ['required', 'in:medecin,stagiaire'],
             'security_question' => ['required', 'string', 'max:255'],
             'security_answer' => ['required', 'string', 'max:255'],
+            'expires_at' => ['nullable', 'date', 'after:today'],
         ];
 
         // Le service_id est requis uniquement pour les médecins
         if ($request->role === 'medecin') {
             $rules['service_id'] = ['required', 'exists:services,id'];
+        }
+
+        // La date d'expiration est requise pour les stagiaires
+        if ($request->role === 'stagiaire') {
+            $rules['expires_at'] = ['required', 'date', 'after:today'];
         }
 
         $validator = Validator::make($request->all(), $rules);
@@ -63,6 +69,7 @@ class DoctorRegisterController extends Controller
             'password' => Hash::make($request->password),
             'security_question' => $request->security_question,
             'security_answer' => $request->security_answer,
+            'expires_at' => $request->expires_at,
         ]);
 
         // Assigner le rôle selon le choix

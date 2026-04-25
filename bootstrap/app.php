@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
+
+        $middleware->web(append: [
+            \App\Http\Middleware\CheckAccountExpiration::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Tu peux ajouter ici une gestion personnalisée si une autorisation est refusée

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'role',
         'security_question',
         'security_answer',
+        'expires_at',
     ];
 
     /**
@@ -46,6 +47,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'expires_at' => 'datetime',
         ];
     }
 

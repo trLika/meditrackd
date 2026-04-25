@@ -207,7 +207,7 @@
                         <i class="bi bi-hospital me-1"></i>Service médical
                     </label>
                     
-                    <select name="service_id" id="service_select" class="form-select glass-input" required>
+                    <select name="service_id" id="service_select" class="form-select glass-input">
                         <option value="">Sélectionner votre service...</option>
                         @if(isset($services) && $services->count() > 0)
                             @foreach($services as $service)
@@ -219,6 +219,15 @@
                             <option value="" disabled>Aucun service disponible</option>
                         @endif
                     </select>
+                </div>
+
+                <div class="mb-4" id="expiration_section">
+                    <label class="form-label glass-label">
+                        <i class="bi bi-calendar-event me-1"></i>Date de fin de validité (Compte temporaire)
+                    </label>
+                    <input type="date" name="expires_at" id="expires_at" class="form-control glass-input" 
+                           min="{{ date('Y-m-d') }}" value="{{ old('expires_at') }}">
+                    <small class="text-white-50">Obligatoire pour les stagiaires.</small>
                 </div>
 
                 <div class="d-grid gap-2">
@@ -246,23 +255,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const roleStagiaire = document.getElementById('role_stagiaire');
     const serviceSection = document.getElementById('service_section');
     const serviceSelect = document.getElementById('service_select');
+    const expirationSection = document.getElementById('expiration_section');
+    const expirationInput = document.getElementById('expires_at');
 
-    function toggleServiceSection() {
+    function toggleFields() {
         if (roleMedecin.checked) {
+            // Mode Médecin
             serviceSection.style.display = 'block';
             serviceSelect.required = true;
+            
+            expirationSection.style.display = 'none';
+            expirationInput.required = false;
         } else {
+            // Mode Stagiaire
             serviceSection.style.display = 'none';
             serviceSelect.required = false;
             serviceSelect.value = '';
+            
+            expirationSection.style.display = 'block';
+            expirationInput.required = true;
         }
     }
 
-    roleMedecin.addEventListener('change', toggleServiceSection);
-    roleStagiaire.addEventListener('change', toggleServiceSection);
+    roleMedecin.addEventListener('change', toggleFields);
+    roleStagiaire.addEventListener('change', toggleFields);
     
     // Initialisation
-    toggleServiceSection();
+    toggleFields();
 });
 </script>
 @endsection
