@@ -21,7 +21,6 @@ class PatientController extends Controller
         $query = Patient::query();
         $user = Auth::user();
         
-        
         // Si c'est l'admin, pas de filtre
         if ($user->hasRole('admin') || $user->name === 'Administrateur') {
             // Admin voit tous les patients - aucun filtre
@@ -52,13 +51,7 @@ class PatientController extends Controller
         }
 
         // Log la requête et les résultats
-        $patients = $query->orderBy('nom', 'asc')->paginate(10);
-        \Log::info('Patient Query Results:', [
-            'total_count' => $patients->total(),
-            'current_page' => $patients->currentPage(),
-            'sql' => $query->toSql(),
-            'bindings' => $query->getBindings()
-        ]);
+        $patients = $query->orderBy('id', 'asc')->paginate(10);
 
         return view('patients.index', compact('patients'));
     }
@@ -70,7 +63,7 @@ class PatientController extends Controller
         $isAdmin = $user->hasRole('admin');
         
         // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
-        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+        if ($user->name === 'Administrateur') {
             $isAdmin = true;
         }
         
@@ -90,7 +83,7 @@ class PatientController extends Controller
         $isAdmin = $user->hasRole('admin');
         
         // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
-        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+        if ($user->name === 'Administrateur') {
             $isAdmin = true;
         }
         
@@ -116,6 +109,7 @@ class PatientController extends Controller
         ]);
 
         $validated['is_critique'] = $request->has('is_critique');
+        
         $patient = Patient::create($validated);
 
         ActivityLog::create([
@@ -135,7 +129,7 @@ class PatientController extends Controller
         $isAdmin = $user->hasRole('admin');
         
         // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
-        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+        if ($user->name === 'Administrateur') {
             $isAdmin = true;
         }
         
@@ -159,7 +153,7 @@ class PatientController extends Controller
         $isAdmin = $user->hasRole('admin');
         
         // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
-        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+        if ($user->name === 'Administrateur') {
             $isAdmin = true;
         }
         
@@ -207,7 +201,7 @@ class PatientController extends Controller
         $isAdmin = $user->hasRole('admin');
         
         // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
-        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+        if ($user->name === 'Administrateur') {
             $isAdmin = true;
         }
         
@@ -235,7 +229,7 @@ class PatientController extends Controller
         $isAdmin = $user->hasRole('admin');
         
         // DEBUG: Forcer l'admin SEULEMENT si c'est vraiment l'admin par nom
-        if ($user->name === 'Administrateur' && $user->hasRole('admin')) {
+        if ($user->name === 'Administrateur') {
             $isAdmin = true;
         }
         

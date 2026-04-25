@@ -52,7 +52,16 @@ class DashboardController extends Controller
             ]);
         } else {
             // Statistiques filtrées pour les médecins
-            $userServicesIds = Auth::user()->services()->pluck('services.id');
+            $userServices = Auth::user()->services;
+            $userServicesIds = $userServices->pluck('id');
+            
+            \Log::info('Doctor Dashboard Stats:', [
+                'user_name' => $user->name,
+                'user_services_count' => $userServices->count(),
+                'user_services_ids' => $userServicesIds->toArray(),
+                'user_services_names' => $userServices->pluck('name')->toArray()
+            ]);
+            
             $totalPatients = Patient::whereIn('service_id', $userServicesIds)->count();
             $consultationsToday = Consultation::whereHas('patient', function($query) use ($userServicesIds) {
                 $query->whereIn('service_id', $userServicesIds);
@@ -64,7 +73,14 @@ class DashboardController extends Controller
                 ->groupBy('groupe_sanguin')
                 ->get();
             $recentLogs = ActivityLog::with('user')->latest()->take(10)->get();
-            $userServices = Auth::user()->services;
+            
+            \Log::info('Doctor Dashboard Results:', [
+                'totalPatients' => $totalPatients,
+                'consultationsToday' => $consultationsToday,
+                'criticalCases' => $criticalCases,
+                'recentPatients_count' => $recentPatients->count(),
+                'groupesSanguins_count' => $groupesSanguins->count()
+            ]);
         }
         
         return view('dashboard', compact(

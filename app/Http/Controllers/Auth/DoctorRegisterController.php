@@ -69,8 +69,24 @@ class DoctorRegisterController extends Controller
             $service = Service::find($request->service_id);
             if ($service) {
                 $user->services()->attach($service->id);
+                \Log::info('Service assigned to new doctor:', [
+                    'user_id' => $user->id,
+                    'user_name' => $user->name,
+                    'service_id' => $service->id,
+                    'service_name' => $service->name
+                ]);
+            } else {
+                \Log::error('Service not found during registration:', ['service_id' => $request->service_id]);
             }
         }
+
+        // DEBUG: Vérifier l'assignation
+        \Log::info('New user registration complete:', [
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'user_role' => $request->role,
+            'assigned_services' => $user->services()->pluck('name', 'id')->toArray()
+        ]);
 
         // Connecter automatiquement l'utilisateur
         auth()->login($user);

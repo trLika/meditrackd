@@ -44,8 +44,8 @@
                         <label class="form-label fw-bold">Sexe</label>
                         <select name="sexe" class="form-select" required>
                             <option value="">Choisir...</option>
-                            <option value="M">Masculin</option>
-                            <option value="F">Féminin</option>
+                            <option value="M" {{ old('sexe') == 'M' ? 'selected' : '' }}>Masculin</option>
+                            <option value="F" {{ old('sexe') == 'F' ? 'selected' : '' }}>Féminin</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -53,7 +53,7 @@
                         <select name="groupe_sanguin" class="form-select">
                             <option value="">Non spécifié</option>
                             @foreach(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $gs)
-                                <option value="{{ $gs }}">{{ $gs }}</option>
+                                <option value="{{ $gs }}" {{ old('groupe_sanguin') == $gs ? 'selected' : '' }}>{{ $gs }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -82,7 +82,7 @@
                 </div>
 
                 <div class="mb-3 form-check">
-                    <input type="checkbox" name="is_critique" value="1" class="form-check-input" id="critique">
+                    <input type="checkbox" name="is_critique" value="1" class="form-check-input" id="critique" {{ old('is_critique') ? 'checked' : '' }}>
                     <label class="form-check-label fw-bold text-danger" for="critique">Marquer comme Cas Critique</label>
                 </div>
 
@@ -94,7 +94,7 @@
 
         @if(isset($services) && $services->count() > 0)
             @foreach($services as $service)
-                <option value="{{ $service->id }}">
+                <option value="{{ $service->id }}" {{ old('service_id') == $service->id ? 'selected' : '' }}>
                     {{ $service->name }}
                 </option>
             @endforeach

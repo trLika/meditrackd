@@ -16,7 +16,8 @@ class Patient extends Model
     'adresse',
     'groupe_sanguin',
     'antecedents',
-    'is_critique'  ,
+    'is_critique',
+    'service_id',
 ];
 public function consultations()
 {

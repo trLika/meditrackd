@@ -39,8 +39,8 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Sexe</label>
                                 <select name="sexe" class="form-select">
-                                    <option value="M" {{ $patient->sexe == 'M' ? 'selected' : '' }}>Masculin</option>
-                                    <option value="F" {{ $patient->sexe == 'F' ? 'selected' : '' }}>Féminin</option>
+                                    <option value="M" {{ old('sexe', $patient->sexe) == 'M' ? 'selected' : '' }}>Masculin</option>
+                                    <option value="F" {{ old('sexe', $patient->sexe) == 'F' ? 'selected' : '' }}>Féminin</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -56,7 +56,7 @@
                                 <label class="form-label fw-bold">Groupe Sanguin</label>
                                 <select name="groupe_sanguin" class="form-select">
                                     @foreach(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] as $groupe)
-                                        <option value="{{ $groupe }}" {{ $patient->groupe_sanguin == $groupe ? 'selected' : '' }}>{{ $groupe }}</option>
+                                        <option value="{{ $groupe }}" {{ old('groupe_sanguin', $patient->groupe_sanguin) == $groupe ? 'selected' : '' }}>{{ $groupe }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="mb-3 form-check form-switch">
-                            <input class="form-check-input" type="checkbox" name="is_critique" id="is_critique" value="1" {{ $patient->is_critique ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="is_critique" id="is_critique" value="1" {{ old('is_critique', $patient->is_critique) ? 'checked' : '' }}>
                             <label class="form-check-label text-danger" for="is_critique"><strong>Marquer comme cas critique</strong></label>
                         </div>
 
@@ -92,7 +92,7 @@
         <option value="">Sélectionnez un service...</option>
         @foreach($services as $service)
             <option value="{{ $service->id }}"
-                {{ $patient->service_id == $service->id ? 'selected' : '' }}>
+                {{ old('service_id', $patient->service_id) == $service->id ? 'selected' : '' }}>
                 {{ $service->name }}
             </option>
         @endforeach

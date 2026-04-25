@@ -143,13 +143,8 @@
                 </div>
                 
                 <!-- Pagination -->
-                <div class="p-3 border-top">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            {{ $patients->count() }} patient(s) trouvé(s)
-                        </small>
-                        {{ $patients->appends(['search' => request('search')])->links() }}
-                    </div>
+                <div class="mt-4 pb-4">
+                    {{ $patients->appends(['search' => request('search')])->links('partials.pagination_numeric') }}
                 </div>
             @endif
         </div>
