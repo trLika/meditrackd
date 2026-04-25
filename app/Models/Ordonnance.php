@@ -20,8 +20,21 @@ class Ordonnance extends Model
         return $this->belongsTo(Patient::class);
     }
     public function user()
-{
-    // Indique que l'ordonnance appartient à un utilisateur (le médecin)
-    return $this->belongsTo(User::class);
-}
+    {
+        // Indique que l'ordonnance appartient à un utilisateur (le médecin)
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'date_prescription' => 'date',
+            'contenu' => 'encrypted',
+        ];
+    }
 }

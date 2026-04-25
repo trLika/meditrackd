@@ -27,4 +27,20 @@ class Consultation extends Model
     {
         return $this->belongsTo(Patient::class);
     }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'date_consultation' => 'date',
+            'symptomes' => 'encrypted',
+            'diagnostic' => 'encrypted',
+            'traitement' => 'encrypted',
+            'poids' => 'float',
+        ];
+    }
 }

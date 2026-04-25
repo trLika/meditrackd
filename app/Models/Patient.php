@@ -37,7 +37,22 @@ public function ordonnances()
     return $this->hasMany(Ordonnance::class);
 }
 
-public function service() {
-    return $this->belongsTo(Service::class);
-}
+    public function service() {
+        return $this->belongsTo(Service::class);
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'date_naissance' => 'date',
+            'is_critique' => 'boolean',
+            'antecedents' => 'encrypted',
+            'allergies' => 'encrypted',
+        ];
+    }
 }
