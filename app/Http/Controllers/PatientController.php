@@ -14,11 +14,25 @@ class PatientController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        
+        // Les stagiaires ne peuvent que voir (index, show)
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            $isAdmin = $user->hasRole('admin') || $user->name === 'Administrateur';
+            $isMedecin = $user->hasRole('medecin');
+            
+            if (!$isAdmin && !$isMedecin && $user->hasRole('stagiaire')) {
+                if (in_array($request->route()->getActionMethod(), ['create', 'store', 'edit', 'update', 'destroy'])) {
+                    abort(403, 'Les stagiaires ne sont pas autorisés à effectuer cette action.');
+                }
+            }
+            return $next($request);
+        });
     }
 
     public function index(Request $request)
     {
-        $query = Patient::query();
+        $query = Patient::with('service');
         $user = Auth::user();
         
         // Si c'est l'admin, pas de filtre
@@ -195,7 +209,7 @@ class PatientController extends Controller
 
     public function show($id)
     {
-        $patient = Patient::findOrFail($id);
+        $patient = Patient::with('service')->findOrFail($id);
         
         $user = Auth::user();
         $isAdmin = $user->hasRole('admin');

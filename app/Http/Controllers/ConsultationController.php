@@ -11,6 +11,25 @@ use Illuminate\Support\Facades\Auth;
 
 class ConsultationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        
+        // Les stagiaires ne peuvent que voir (index, show, generatePDF)
+        $this->middleware(function ($request, $next) {
+            $user = Auth::user();
+            $isAdmin = $user->hasRole('admin') || $user->name === 'Administrateur';
+            $isMedecin = $user->hasRole('medecin');
+            
+            if (!$isAdmin && !$isMedecin && $user->hasRole('stagiaire')) {
+                if (in_array($request->route()->getActionMethod(), ['create', 'store', 'edit', 'update', 'destroy'])) {
+                    abort(403, 'Les stagiaires ne sont pas autorisés à effectuer cette action.');
+                }
+            }
+            return $next($request);
+        });
+    }
+
     /**
      * Affiche la liste des consultations.
      */

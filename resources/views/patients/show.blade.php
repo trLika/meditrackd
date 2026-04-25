@@ -10,7 +10,7 @@
             <a href="{{ route('patients.index') }}" class="btn btn-outline-danger px-3 shadow-sm">
                 <i class="bi bi-arrow-left  "></i> Retour
             </a>
-            @if(auth()->user()->role !== 'stagiaire')
+            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
                 <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary px-3 shadow-sm text-white">
                     <i class="bi bi-pencil-square"></i> Modifier
                 </a>
@@ -31,7 +31,12 @@
                         </div>
                         <div class="ms-3">
                             <h4 class="text-white mb-0 fw-bold">{{ $patient->nom }} {{ $patient->prenom }}</h4>
-                            <span class="badge bg-danger">Groupe : {{ $patient->groupe_sanguin }}</span>
+                            <div class="d-flex gap-1 mt-1">
+                                <span class="badge bg-danger">Groupe : {{ $patient->groupe_sanguin }}</span>
+                                @if(auth()->user()->hasRole('admin') || auth()->user()->name === 'Administrateur')
+                                    <span class="badge bg-secondary">Service : {{ $patient->service->name ?? 'Aucun' }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
@@ -81,8 +86,10 @@
                         <div class="card-header border-0 bg-header-dark d-flex justify-content-between">
                             <h5 class="mb-0 text-info fw-bold small text-uppercase">
                                 <i class="bi bi-calendar-check me-2"></i>Consultations</h5>
-                            <a href="{{ route('consultations.create', $patient->id) }}"
-                            class="btn btn-sm btn-info text-white text-decoration-none small fw-bold">+ Nouvelle</a>
+                            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+                                <a href="{{ route('consultations.create', $patient->id) }}"
+                                class="btn btn-sm btn-info text-white text-decoration-none small fw-bold">+ Nouvelle</a>
+                            @endif
                         </div>
                         <div class="card-body p-0 overflow-auto" style="max-height: 200px;">
                             <table class="table table-custom mb-0 color-white">
@@ -115,7 +122,9 @@
                 <div class="card-header border-0 bg-header-dark d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 text-primary fw-bold small text-uppercase">
                         <i class="bi bi-capsule me-2"></i>Historique Ordonnances</h5>
-                    <a href="{{ route('ordonnances.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary btn-sm rounded-pill text-white shadow-sm px-3">+ Nouvelle</a>
+                    @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+                        <a href="{{ route('ordonnances.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary btn-sm rounded-pill text-white shadow-sm px-3">+ Nouvelle</a>
+                    @endif
                 </div>
                 <div class="card-body p-0">
                     <table class="table table-custom mb-0 align-middle">

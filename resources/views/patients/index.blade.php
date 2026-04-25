@@ -29,9 +29,11 @@
         <h2 class="fw-bold text-success m-0">
             <i class="bi bi-people-fill me-2"></i>Liste des Patients
         </h2>
-        <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill shadow-sm">
-            <i class="bi bi-person-plus-fill me-1"></i> Ajouter un patient
-        </a>
+        @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+            <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill shadow-sm">
+                <i class="bi bi-person-plus-fill me-1"></i> Ajouter un patient
+            </a>
+        @endif
     </div>
 
     <!-- Filtre cas critique -->
@@ -82,6 +84,9 @@
                                 <th class="fw-bold">Téléphone</th>
                                 <th class="fw-bold">Adresse</th>
                                 <th class="fw-bold">Groupe Sanguin</th>
+                                @if(auth()->user()->hasRole('admin') || auth()->user()->name === 'Administrateur')
+                                    <th class="fw-bold">Service</th>
+                                @endif
                                 <th class="text-center fw-bold">Actions</th>
                             </tr>
                         </thead>
@@ -109,13 +114,20 @@
                                             {{ $patient->groupe_sanguin }}
                                         </span>
                                     </td>
+                                    @if(auth()->user()->hasRole('admin') || auth()->user()->name === 'Administrateur')
+                                        <td>
+                                            <span class="badge bg-secondary text-white">
+                                                {{ $patient->service->name ?? 'Aucun' }}
+                                            </span>
+                                        </td>
+                                    @endif
                                     <td>
                                         <div class="d-flex justify-content-center gap-1">
                                             <a href="{{ route('patients.show', $patient->id) }}" 
                                                class="btn btn-sm btn-outline-primary" title="Voir les détails">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            @if(auth()->user()->name === 'Administrateur' || (!auth()->user()->hasRole('stagiaire')))
+                                            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
                                                 <a href="{{ route('patients.edit', $patient->id) }}" 
                                                    class="btn btn-sm btn-outline-warning" title="Modifier">
                                                     <i class="bi bi-pencil"></i>
