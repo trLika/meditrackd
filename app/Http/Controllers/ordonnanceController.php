@@ -56,12 +56,21 @@ class OrdonnanceController extends Controller
             abort(403, 'Accès non autorisé à ce patient.');
         }
 
+        // Vérification de sécurité médicale avancée (Alerte Allergie & Réactions Croisées & Contre-indications)
+        $conflit = \App\Services\MedicationSafetyService::checkConflicts($request->contenu, $patient->allergies, $patient->antecedents);
+
         $ordonnance = Ordonnance::create([
             'patient_id' => $request->patient_id,
             'contenu' => $request->contenu,
             'user_id' => auth()->id(), // Le médecin connecté
             'date_prescription' => now(),
         ]);
+
+        if ($conflit) {
+            $message = "Ordonnance enregistrée, mais une ALERTE ALLERGIE a été détectée (Type: {$conflit['type']}, Conflit: {$conflit['match']} vs Allergie: {$conflit['allergy']}).";
+            return redirect()->route('patients.show', $request->patient_id)
+                             ->with('warning', $message);
+        }
 
         return redirect()->route('patients.show', $request->patient_id)
                          ->with('success', 'Ordonnance générée avec succès');

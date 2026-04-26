@@ -45,7 +45,7 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">Date de naissance</label>
-                               <input type="date" name="date_naissance" value="{{ old('date_naissance', $patient->date_naissance) }}"
+                               <input type="date" name="date_naissance" value="{{ old('date_naissance', $patient->date_naissance ? $patient->date_naissance->format('Y-m-d') : '') }}"
                                class="form-control" required>
 
                             </div>

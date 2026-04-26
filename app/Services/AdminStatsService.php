@@ -18,6 +18,7 @@ class AdminStatsService
             'medecins_assignes' => $this->getMedecinsAssignes(),
             'services_vides' => $this->getServicesVides(),
             'total_utilisateurs' => $this->getTotalUtilisateurs(),
+            'total_stagiaires' => $this->getTotalStagiaires(),
             'taux_assignation' => $this->getTauxAssignation(),
         ];
     }
@@ -60,6 +61,16 @@ class AdminStatsService
     public function getTotalUtilisateurs(): int
     {
         return User::count();
+    }
+
+    /**
+     * Nombre total de stagiaires
+     */
+    public function getTotalStagiaires(): int
+    {
+        return User::whereHas('roles', function($q) {
+            $q->where('name', 'stagiaire');
+        })->orWhere('role', 'stagiaire')->count();
     }
 
     /**

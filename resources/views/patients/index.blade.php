@@ -29,7 +29,7 @@
         <h2 class="fw-bold text-success m-0">
             <i class="bi bi-people-fill me-2"></i>Liste des Patients
         </h2>
-        @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+        @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasAnyRole(['admin', 'administrateur']) || auth()->user()->hasRole('medecin') || auth()->user()->role === 'medecin' || auth()->user()->role === 'admin')
             <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill shadow-sm">
                 <i class="bi bi-person-plus-fill me-1"></i> Ajouter un patient
             </a>
@@ -127,7 +127,7 @@
                                                class="btn btn-sm btn-outline-primary" title="Voir les détails">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+                                            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasAnyRole(['admin', 'administrateur']) || auth()->user()->hasRole('medecin') || auth()->user()->role === 'medecin' || auth()->user()->role === 'admin')
                                                 <a href="{{ route('patients.edit', $patient->id) }}" 
                                                    class="btn btn-sm btn-outline-warning" title="Modifier">
                                                     <i class="bi bi-pencil"></i>

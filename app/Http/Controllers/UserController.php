@@ -75,6 +75,12 @@ class UserController extends Controller
                 ->with('error', 'Vous ne pouvez pas supprimer votre propre compte.');
         }
 
+        // Empêcher la suppression si l'utilisateur a créé des ordonnances (Intégrité médicale)
+        if (\App\Models\Ordonnance::where('user_id', $user->id)->exists()) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'Impossible de supprimer cet utilisateur : il est l\'auteur d\'ordonnances enregistrées dans le système. Vous devez d\'abord réassigner ou archiver ses dossiers.');
+        }
+
         // Détacher les services avant suppression
         $user->services()->detach();
         

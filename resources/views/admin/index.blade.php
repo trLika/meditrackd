@@ -11,25 +11,33 @@
 
     {{-- Statistiques --}}
     <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card bg-primary text-white">
-                <div class="card-body text-center">
+        <div class="col-md-2">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <h4>{{ $stats['total_services'] }}</h4>
                     <small>Services</small>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
-                <div class="card-body text-center">
+        <div class="col-md-2">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <h4>{{ $stats['total_medecins'] }}</h4>
                     <small>Médecins</small>
                 </div>
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="card bg-info text-white h-100" style="background-color: #6f42c1 !important;">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                    <h4>{{ $stats['total_stagiaires'] }}</h4>
+                    <small>Stagiaires</small>
+                </div>
+            </div>
+        </div>
         <div class="col-md-3">
-            <div class="card bg-warning text-white">
-                <div class="card-body text-center">
+            <div class="card bg-warning text-white h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <h4>{{ $stats['medecins_assignes'] }}</h4>
                     <small>Médecins Assignés</small>
                     @if($stats['taux_assignation'] > 0)
@@ -39,8 +47,8 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card bg-info text-white">
-                <div class="card-body text-center">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
                     <h4>{{ $stats['total_utilisateurs'] }}</h4>
                     <small>Utilisateurs Total</small>
                 </div>

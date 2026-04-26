@@ -10,7 +10,7 @@
             <a href="{{ route('patients.index') }}" class="btn btn-outline-danger px-3 shadow-sm">
                 <i class="bi bi-arrow-left  "></i> Retour
             </a>
-            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasAnyRole(['admin', 'administrateur']) || auth()->user()->hasRole('medecin') || auth()->user()->role === 'medecin' || auth()->user()->role === 'admin')
                 <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-primary px-3 shadow-sm text-white">
                     <i class="bi bi-pencil-square"></i> Modifier
                 </a>
@@ -86,7 +86,7 @@
                         <div class="card-header border-0 bg-header-dark d-flex justify-content-between">
                             <h5 class="mb-0 text-info fw-bold small text-uppercase">
                                 <i class="bi bi-calendar-check me-2"></i>Consultations</h5>
-                            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+                            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasAnyRole(['admin', 'administrateur']) || auth()->user()->hasRole('medecin') || auth()->user()->role === 'medecin' || auth()->user()->role === 'admin')
                                 <a href="{{ route('consultations.create', $patient->id) }}"
                                 class="btn btn-sm btn-info text-white text-decoration-none small fw-bold">+ Nouvelle</a>
                             @endif
@@ -122,7 +122,7 @@
                 <div class="card-header border-0 bg-header-dark d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 text-primary fw-bold small text-uppercase">
                         <i class="bi bi-capsule me-2"></i>Historique Ordonnances</h5>
-                    @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin') || auth()->user()->hasRole('medecin'))
+                    @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasAnyRole(['admin', 'administrateur']) || auth()->user()->hasRole('medecin') || auth()->user()->role === 'medecin' || auth()->user()->role === 'admin')
                         <a href="{{ route('ordonnances.create', ['patient_id' => $patient->id]) }}" class="btn btn-primary btn-sm rounded-pill text-white shadow-sm px-3">+ Nouvelle</a>
                     @endif
                 </div>

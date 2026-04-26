@@ -33,11 +33,18 @@
                                 </td>
                                 <td>{{ $user->email }}</td>
                                 <td>
+                                    @php
+                                        $roleName = $user->getRoleNames()->first() ?: $user->role;
+                                        $isAdministrator = in_array(strtolower($roleName), ['admin', 'administrateur']);
+                                        $isMedecin = strtolower($roleName) === 'medecin';
+                                        $isStagiaire = strtolower($roleName) === 'stagiaire';
+                                    @endphp
                                     <span class="badge bg-{{ 
-                                        $user->getRoleNames()->first() == 'admin' ? 'danger' : 
-                                        ($user->getRoleNames()->first() == 'medecin' ? 'success' : 'info') 
+                                        $isAdministrator ? 'danger' : 
+                                        ($isMedecin ? 'success' : 
+                                        ($isStagiaire ? 'info' : 'secondary')) 
                                     }}">
-                                        {{ ucfirst($user->getRoleNames()->first()) }}
+                                        {{ ucfirst($roleName ?: 'Utilisateur') }}
                                     </span>
                                 </td>
                                 <td>
