@@ -94,7 +94,7 @@
                                                 <div class="fw-bold text-dark">{{ Auth::user()->name }}</div>
                                                 <div class="text-muted small">{{ Auth::user()->email }}</div>
                                                 <div class="mt-2">
-                                                    @if(Auth::user()->hasRole('admin'))
+                                                    @if(Auth::user()->hasAnyRole(['admin', 'administrateur']) || Auth::user()->name === 'Administrateur')
                                                         <span class="badge bg-danger">Administrateur</span>
                                                     @elseif(Auth::user()->hasRole('medecin'))
                                                         <span class="badge bg-primary">Médecin</span>

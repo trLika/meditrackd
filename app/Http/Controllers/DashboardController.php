@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         // Déterminer si l'utilisateur est admin ou médecin
         $user = Auth::user();
-        $isAdmin = $user->hasRole('admin');
+        $isAdmin = $user->hasAnyRole(['admin', 'administrateur']);
         
         // DEBUG: Forcer l'admin pour tester
         if ($user->name === 'Administrateur') {
@@ -39,6 +39,7 @@ class DashboardController extends Controller
                 ->groupBy('groupe_sanguin')
                 ->get();
             $recentLogs = ActivityLog::with('user')->latest()->take(20)->get();
+            $notifications = $user->unreadNotifications;
             $userServices = null;
             
             // DEBUG: Log des valeurs
@@ -73,6 +74,7 @@ class DashboardController extends Controller
                 ->groupBy('groupe_sanguin')
                 ->get();
             $recentLogs = ActivityLog::with('user')->latest()->take(10)->get();
+            $notifications = null;
             
             \Log::info('Doctor Dashboard Results:', [
                 'totalPatients' => $totalPatients,
@@ -91,7 +93,8 @@ class DashboardController extends Controller
             'recentPatients',
             'recentLogs',
             'isAdmin',
-            'userServices'
+            'userServices',
+            'notifications'
         ));
     }
 }

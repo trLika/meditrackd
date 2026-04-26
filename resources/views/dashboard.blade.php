@@ -16,11 +16,11 @@
             <h2 class="text-dark text-uppercase fw-bold">
                 Tableau de Bord
                 {{-- DEBUG: {{ auth()->user()->name }} - Role: {{ auth()->user()->getRoleNames()->first() }} - isAdmin: {{ auth()->user()->hasRole('admin') ? 'YES' : 'NO' }} --}}
-                @if(auth()->user()->name !== 'Administrateur' && !auth()->user()->hasRole('admin'))
+                @if(auth()->user()->name !== 'Administrateur' && !$isAdmin)
                     <small class="text-muted fs-6">- Mes Services</small>
                 @endif
             </h2>
-            @if(auth()->user()->name !== 'Administrateur' && !auth()->user()->hasRole('admin') && isset($userServices) && $userServices->count() > 0)
+            @if(auth()->user()->name !== 'Administrateur' && !$isAdmin && isset($userServices) && $userServices->count() > 0)
                 <div class="mt-2">
                     @foreach($userServices as $service)
                         <span class="badge bg-primary me-1">{{ $service->name }}</span>
@@ -39,7 +39,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-uppercase opacity-75">
-                                @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin')) 
+                                @if($isAdmin) 
                                     Total patients enregistrés
                                 @else 
                                     Mes patients
@@ -60,7 +60,7 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-uppercase opacity-75">
-                                @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin')) 
+                                @if($isAdmin) 
                                     Cas critiques
                                 @else 
                                     Mes cas critiques
@@ -116,7 +116,7 @@
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
                     <h5 class="mb-0">
                         <i class="bi bi-people me-2 text-dark"></i> 
-                        @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin')) 
+                        @if($isAdmin) 
                             Derniers patients enregistrés
                         @else 
                             Mes derniers patients
@@ -156,8 +156,35 @@
         </div>
     </div>
 
+    <!--Affichage des notifications pour les admins-->
+    @if($isAdmin && isset($notifications) && $notifications->count() > 0)
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <div class="card shadow border-0" style="border-left: 5px solid #ffc107 !important;">
+                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center py-3">
+                    <h5 class="mb-0"><i class="bi bi-bell-fill me-2"></i> Alertes et Notifications</h5>
+                    <span class="badge bg-dark text-white">{{ $notifications->count() }} non lues</span>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        @foreach($notifications as $notification)
+                        <li class="list-group-item list-group-item-warning d-flex justify-content-between align-items-start p-3">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">{{ $notification->data['message'] ?? 'Notification' }}</div>
+                                <small class="text-muted">Tentative le : {{ \Carbon\Carbon::parse($notification->data['attempt_at'])->format('d/m/Y à H:i') }}</small>
+                            </div>
+                            <span class="badge bg-dark rounded-pill">{{ \Carbon\Carbon::parse($notification->data['attempt_at'])->diffForHumans() }}</span>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!--Affichage des logs récents pour les admins-->
-    @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasRole('admin'))
+    @if($isAdmin)
     <div class="row g-4">
         <div class="col-12">
             <div class="card shadow border-0">

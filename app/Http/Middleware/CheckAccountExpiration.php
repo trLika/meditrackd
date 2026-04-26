@@ -20,6 +20,13 @@ class CheckAccountExpiration
             $user = Auth::user();
             
             if ($user->expires_at && $user->expires_at->isPast()) {
+                // Notifier les administrateurs (par rôle ou par nom)
+                $admins = \App\Models\User::whereHas('roles', function($q) {
+                    $q->whereIn('name', ['admin', 'administrateur']);
+                })->orWhere('name', 'Administrateur')->get();
+                
+                \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AccountExpiredAttempt($user));
+
                 Auth::logout();
                 
                 $request->session()->invalidate();

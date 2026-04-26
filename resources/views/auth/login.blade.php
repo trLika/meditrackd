@@ -90,6 +90,12 @@
                     </div>
                 @endif
 
+                @if (session('error'))
+                    <div class="alert alert-danger mb-4" style="background: rgba(220, 53, 69, 0.2); border: 1px solid rgba(220, 53, 69, 0.3); color: white;">
+                        <small><i class="bi bi-exclamation-octagon me-2"></i>{{ session('error') }}</small>
+                    </div>
+                @endif
+
                 @if ($errors->any())
                     <div class="alert alert-danger mb-4" style="background: rgba(220, 53, 69, 0.2); border: 1px solid rgba(220, 53, 69, 0.3); color: white;">
                         <small><i class="bi bi-exclamation-triangle me-2"></i>Identifiants incorrects.</small>
