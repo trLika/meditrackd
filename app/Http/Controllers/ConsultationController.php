@@ -38,17 +38,20 @@ class ConsultationController extends Controller
         // Récupère les consultations avec les infos patient pour éviter le problème N+1
         $consultations = Consultation::with('patient');
         
-        // Si c'est un médecin, filtrer par ses services
-        if (!Auth::user()->hasRole('admin')) {
-            $userServices = Auth::user()->services()->pluck('services.id');
-            $consultations = $consultations->whereHas('patient', function($query) use ($userServices) {
-                $query->whereIn('service_id', $userServices);
-            });
-        }
-        
         // Filtre pour les consultations du jour
         if ($request->has('today') && $request->today) {
             $consultations = $consultations->whereDate('created_at', today());
+        }
+        
+        // Si c'est un médecin (non admin), filtrer par ses services
+        $user = Auth::user();
+        $isAdmin = $user->hasRole('admin') || $user->name === 'Administrateur';
+        
+        if (!$isAdmin) {
+            $userServices = $user->services()->pluck('services.id');
+            $consultations = $consultations->whereHas('patient', function($query) use ($userServices) {
+                $query->whereIn('service_id', $userServices);
+            });
         }
         
         $consultations = $consultations->latest()->get();
