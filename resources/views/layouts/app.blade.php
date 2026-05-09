@@ -7,20 +7,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        body { 
+        body {
             background: linear-gradient(-50deg, #dc3545, #74d1f8, #b2dafa, #a34862);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             min-height: 100vh;
         }
-        
+
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
-        .flex-grow-1 { 
+
+        .flex-grow-1 {
             background: transparent;
         }
         .navbar-custom {
@@ -36,7 +36,7 @@
         @if(Auth::check() && (request()->is('dashboard*') || request()->is('patients*') || request()->is('admin*')))
             <div class="d-flex">
                 {{-- Barre latérale --}}
-                <nav class="bg-dark text-white shadow" style="width: 260px; position: fixed; height: 100vh; z-index: 1000;">
+                <nav class="bg-secondary text-white shadow" style="width: 260px; position: fixed; height: 100vh; z-index: 1000;">
                     <div class="p-4">
                         <h4 class="text-danger fw-bold mb-4">MediTrackD</h4>
                         <ul class="nav nav-pills flex-column">
@@ -78,10 +78,10 @@
                             <div class="navbar-text text-white">
                                 <h5 class="mb-0 fw-bold">MediTrackD</h5>
                             </div>
-                            
+
                             <div class="dropdown">
                                 <a href="#" class="nav-link dropdown-toggle text-white d-flex align-items-center" data-bs-toggle="dropdown">
-                                    <i class="bi bi-person-circle me-2 text-danger"></i> 
+                                    <i class="bi bi-person-circle me-2 text-danger"></i>
                                     <span>{{ Auth::user()->name }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 280px;">

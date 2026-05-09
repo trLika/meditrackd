@@ -39,9 +39,9 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-uppercase opacity-75">
-                                @if($isAdmin) 
+                                @if($isAdmin)
                                     Total patients enregistrés
-                                @else 
+                                @else
                                     Mes patients
                                 @endif
                             </h6>
@@ -60,9 +60,9 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
                             <h6 class="text-uppercase opacity-75">
-                                @if($isAdmin) 
+                                @if($isAdmin)
                                     Cas critiques
-                                @else 
+                                @else
                                     Mes cas critiques
                                 @endif
                             </h6>
@@ -115,10 +115,10 @@
             <div class="card shadow border-0 h-100">
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center py-3">
                     <h5 class="mb-0">
-                        <i class="bi bi-people me-2 text-dark"></i> 
-                        @if($isAdmin) 
+                        <i class="bi bi-people me-2 text-dark"></i>
+                        @if($isAdmin)
                             Derniers patients enregistrés
-                        @else 
+                        @else
                             Mes derniers patients
                         @endif
                     </h5>
