@@ -54,24 +54,38 @@ class PatientController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $terms = explode(' ', $search);
+            $cleanSearch = str_replace(' ', '', $search);
             
-            $query->where(function($q) use ($search, $terms) {
-                // Recherche par ID exact
+            $query->where(function($q) use ($search, $cleanSearch) {
+                // Recherche spécifique par ID (ex: #2 ou id:2)
+                if (preg_match('/^(id:|#)\s*(\d+)$/i', trim($search), $matches)) {
+                    $q->where('id', $matches[2]);
+                    return; // On arrête là pour ne chercher QUE l'ID
+                }
+
+                // Toujours chercher par ID exact si c'est un nombre valide
                 if (is_numeric($search)) {
                     $q->orWhere('id', $search);
                 }
                 
-                // Recherche par termes
-                foreach ($terms as $term) {
-                    if (empty($term)) continue;
-                    $q->where(function($sub) use ($term) {
-                        $sub->where('nom', 'like', '%' . $term . '%')
-                            ->orWhere('prenom', 'like', '%' . $term . '%')
-                            ->orWhere('telephone', 'like', '%' . $term . '%')
-                            ->orWhereHas('service', function($s) use ($term) {
-                                $s->where('name', 'like', '%' . $term . '%');
+                // Recherche par téléphone exact (si la recherche nettoyée contient 8 chiffres)
+                if (is_numeric($cleanSearch) && strlen($cleanSearch) === 8) {
+                    $q->orWhere('telephone', $cleanSearch);
+                } else {
+                    // Recherche par termes textuels
+                    $q->orWhere(function($textSearch) use ($search) {
+                        $terms = explode(' ', $search);
+                        foreach ($terms as $term) {
+                            if (empty($term)) continue;
+                            $textSearch->where(function($sub) use ($term) {
+                                $sub->where('nom', 'like', '%' . $term . '%')
+                                    ->orWhere('prenom', 'like', '%' . $term . '%')
+                                    ->orWhere('telephone', 'like', '%' . $term . '%')
+                                    ->orWhereHas('service', function($s) use ($term) {
+                                        $s->where('name', 'like', '%' . $term . '%');
+                                    });
                             });
+                        }
                     });
                 }
             });

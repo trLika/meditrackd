@@ -33,7 +33,8 @@
             <a href="{{ route('patients.access-history') }}" class="btn btn-outline-info rounded-pill shadow-sm">
                 <i class="bi bi-clock-history me-1"></i> Historique accès
             </a>
-            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasAnyRole(['admin', 'administrateur']) || auth()->user()->hasRole('medecin') || auth()->user()->role === 'medecin' || auth()->user()->role === 'admin')
+            @if(auth()->user()->name === 'Administrateur' || auth()->user()->hasAnyRole(['admin', 'administrateur'])
+            || auth()->user()->hasRole('medecin') || auth()->user()->role === 'medecin' || auth()->user()->role === 'admin')
                 <a href="{{ route('patients.create') }}" class="btn btn-success rounded-pill shadow-sm">
                     <i class="bi bi-person-plus-fill me-1"></i> Ajouter un patient
                 </a>
@@ -58,7 +59,8 @@
     <div class="row justify-content-center mb-4">
         <div class="col-md-6">
             <form action="{{ route('patients.index') }}" method="GET" class="input-group shadow-sm">
-                <input type="text" name="search" class="form-control" placeholder="Rechercher un patient..." value="{{ request('search') }}">
+                <input type="text" name="search" class="form-control
+                " placeholder="Rechercher par nom, tél ou #ID (ex: #2)..." value="{{ request('search') }}">
                 <button class="btn btn-info text-white" type="submit">
                     <i class="bi bi-search"></i>
                 </button>
@@ -140,12 +142,12 @@
                                             @endphp
 
                                             @if($hasServiceAccess || $hasCrossAccess)
-                                                <a href="{{ route('patients.show', $patient->id) }}" 
+                                                <a href="{{ route('patients.show', $patient->id) }}"
                                                    class="btn btn-sm btn-outline-primary" title="Voir les détails">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                                 @if($isAdmin || $user->hasRole('medecin'))
-                                                    <a href="{{ route('patients.edit', $patient->id) }}" 
+                                                    <a href="{{ route('patients.edit', $patient->id) }}"
                                                        class="btn btn-sm btn-outline-warning" title="Modifier">
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
@@ -155,15 +157,15 @@
                                                     </a>
                                                 @endif
                                             @else
-                                                <a href="{{ route('patients.request-access', $patient->id) }}" 
+                                                <a href="{{ route('patients.request-access', $patient->id) }}"
                                                    class="btn btn-sm btn-info text-white" title="Demander l'accès">
                                                     <i class="bi bi-unlock"></i> Demander l'accès
                                                 </a>
                                             @endif
 
                                             @if($isAdmin || $user->hasRole('medecin'))
-                                                <form action="{{ route('patients.destroy', $patient->id) }}" 
-                                                      method="POST" class="d-inline" 
+                                                <form action="{{ route('patients.destroy', $patient->id) }}"
+                                                      method="POST" class="d-inline"
                                                       onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce patient ?')">
                                                     @csrf
                                                     @method('DELETE')
@@ -179,7 +181,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <!-- Pagination -->
                 <div class="mt-4 pb-4">
                     {{ $patients->appends(['search' => request('search')])->links('partials.pagination_numeric') }}
